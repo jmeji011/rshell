@@ -9,16 +9,16 @@
 
 using namespace std;
 
+//this function gets the user's login and host name(extra credit prompt)
 void prompt()
 {
 	char* log = getlogin();
+	char host[BUFSIZ];
 	
 	if(!getlogin())
 	{
 		perror("getlogin()");
 	}
-
-	char host[BUFSIZ];
 	
 	if(gethostname(host, BUFSIZ) == -1)
 	{
@@ -30,6 +30,18 @@ void prompt()
 	cout << host;
 	cout << ":";
 	cout << "$ ";
+}
+
+bool exitshell(char** close)
+{
+	string abort = *close;
+	string e("exit");
+	
+	if(abort == e)
+	{
+		return true;
+	}
+	else return false;
 }
 
 int main(int argc, char* argv[])
