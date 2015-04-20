@@ -5,9 +5,13 @@ is ignored by the program.
 
 #How to run rshell
 git clone https://github.com/jmeji011/rshell.git
+
 cd rshell
+
 git checkout hw0
+
 make
+
 bin/rshell
 
 
