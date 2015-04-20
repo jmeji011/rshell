@@ -1,7 +1,12 @@
 #rshell
 rshell is an imitation of the BASH terminal. This implementation allows the use 
-of connectors such as `||`, `&&` and `;`. Anything after a `#` is a comment and 
-is ignored by the program. The command `exit` closes the program.
+of connectors such as `||`, `&&` and `;`.  Anything after a `#` is a comment and 
+is ignored by the program. The command `exit` closes the program. 
+
+Connector Meanings:
+`||` run command only if first one fails.
+`&&` run command only if first one succeeds.
+`;` run any command if the command is true.
 
 #How to run rshell
 ```
