@@ -46,7 +46,7 @@ bool exitshell(char** close)
 }
 
 //this function parses the command string
-void parse(string& str, char** dilem, char*& token)
+void parse(string& str, char**& dilem, char*& token)
 {
 	char** dilem1 = (char**) malloc (BUFSIZ);
 	bool tokenbool = false;
@@ -124,7 +124,7 @@ bool execute(char** arg)
 }
 int main(int argc, char* argv[])
 {
-	while(1)
+	while(cin.good())
 	{
 		string input;
 		string space = " ",
@@ -138,23 +138,135 @@ int main(int argc, char* argv[])
 
 		getline(cin, input);
 		
-		int num1 = input.find(num2,0);
+		int num1 = input.find(hashtag,0);
 		int cnt = 0;
 
 		if(num1 >= 0) input = input.substr(0, num1);
 
 		string::iterator i;
 
-		for(i = input.begin(); i < input.end(); i++)
+		for(i = input.begin(); i < input.end(); i++,cnt++)
 		{
+			int andchar = input.find(andkey, cnt);
+			int	orchar = input.find(orkey, cnt);
+			int semichar = input.find(semi, cnt);
+
+			if(andchar >= 0 && (andchar < orchar || orchar == -1) && (andchar < semichar || semichar == -1))
+			{
+				input.insert(input.find(andkey,cnt), " ");
+				input.insert(input.find(andkey,cnt)+2, " ");
+
+				i = input.begin();
+				i = i + input.find(andkey,cnt) + 2;
+				cnt = input.find(andkey,cnt) + 2;
+			}
+
+			else if(orchar >= 0 && (orchar < semichar || semichar == -1) && (orchar < andchar || andchar == -1))
+			{
+				input.insert(input.find(orkey,cnt), " ");
+				input.insert(input.find(orkey,cnt)+2, " ");
+
+				i = input.begin();
+				i = i + input.find(orkey,cnt) + 2;
+				cnt = input.find(orkey,cnt) + 2;
+			}
+
+			else if(semichar >= 0 && (semichar < andchar || andchar == -1) && (semichar < orchar || orchar == -1))
+			{
+				input.insert(input.find(semi,cnt), " ");
+				input.insert(input.find(semi,cnt)+1, " ");
+
+				i = input.begin();
+				i = i + input.find(semi,cnt) + 1;
+				cnt = input.find(semi,cnt) + 1;
+			}
 			
 		}
-
 		
+		char* chr1 = (char*) input.c_str();
+		char* tkn;
 
-		
-		
+		tkn = strtok( chr1, " \t\n");
 
+		while( tkn != NULL)
+		{
+			string str;
+			bool booland = true;
+			bool boolor = false;
+			char** dilem;
+			
+			while(tkn != NULL)
+			{
+				parse(str, dilem, tkn);
+
+				if(*dilem != NULL && booland && !boolor)
+				{
+
+					if(exitshell(dilem))
+					{
+						exit(1);
+					}
+				}
+				if(str == orkey)
+				{
+					if(boolor);
+
+					else if(!booland)
+					{
+						booland = true;
+						boolor = false;
+					}
+					else if(execute(dilem) == true)
+					{
+						if(tkn != NULL)
+						{
+							boolor = true;
+						}
+					}
+
+				}
+					
+				else if( str == andkey)
+				{ 	
+						
+					if(!booland);
+						
+					else if(boolor)
+					{
+						boolor = false;
+						booland = true;
+					}
+						
+					else if(execute(dilem) == false)
+					{
+						if(tkn != NULL)
+						{
+							booland = false;
+						}
+					}
+				}	
+
+				else if(str == 	semi)
+				{
+					if(booland && !boolor)
+					{
+						if(execute(dilem));
+					}
+
+					booland = true;
+					boolor = false;
+				}	
+				else
+				{
+					if(execute(dilem));
+				}
+					
+				delete dilem;
+			}
+			break;
+		}
+
+	}
 
 	return 0;
 }
