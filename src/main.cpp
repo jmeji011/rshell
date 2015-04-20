@@ -13,23 +13,19 @@ using namespace std;
 void prompt()
 {
 	char* log = getlogin();
-	char host[BUFSIZ];
+	char host[500];
 	
 	if(!getlogin())
 	{
 		perror("getlogin()");
 	}
 	
-	if(gethostname(host, BUFSIZ) == -1)
+	if(gethostname(host, 500) == -1)
 	{
-		perror("gethostname()");
+		perror("gethostname");
 	}
 
-	cout << log;
-	cout << "@" ;
-	cout << host;
-	cout << ":";
-	cout << "$ ";
+	cout << log << "@" << host << ":"<< "$ ";
 }
 
 //this function exits the program if "exit" is typed.
