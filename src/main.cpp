@@ -82,9 +82,78 @@ void parse(string& str, char** dilem, char*& token)
 	
 }
 
+bool execute(char** arg)	
+{
+	int stat = 0;
+	
+	if(*arg == NULL) return false;
+	
+	int pid = fork();
+	if(pid == -1)
+	{
+		perror("fork failed");
+		exit(1);
+	}	
+	else if(pid == 0)
+	{
+		stat = execvp(arg[0], arg);
+
+		if(stat == -1)
+		{
+			perror("execvp failed");
+			exit(1);
+		}
+	}
+
+	else if(pid > 0)
+	{
+		int wait = waitpid(pid, &stat, 0);
+		string found = arg[0];
+
+		if(wait == -1)	perror("wait failed");
+		
+		if(exitshell(arg));
+		
+		else if( found == "true") return true;
+		
+		else if( found == "false") return false;
+
+		if(stat > 0) return false;
+	}
+	return true;
+}
 int main(int argc, char* argv[])
 {
-	prompt();
+	while(1)
+	{
+		string input;
+		string space = " ",
+				andkey = "&&",
+				orkey = "||",
+				semi = ";",
+				hashtag = "#";
+		
+		//display prompt
+		prompt();
+
+		getline(cin, input);
+		
+		int num1 = input.find(num2,0);
+		int cnt = 0;
+
+		if(num1 >= 0) input = input.substr(0, num1);
+
+		string::iterator i;
+
+		for(i = input.begin(); i < input.end(); i++)
+		{
+			
+		}
+
+		
+
+		
+		
 
 
 	return 0;
