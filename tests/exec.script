@@ -1,0 +1,178 @@
+Script started on Mon 20 Apr 2015 12:45:25 AM PDT
+~
+jmeji011@hammer $ cd cs100/rshell
+~/cs100/rshell
+jmeji011@hammer $ make
+mkdir -p ./bin
+g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
+~/cs100/rshell
+jmeji011@hammer $ /[Kbin/rshell
+jmeji011@hammer.cs.ucr.edu:$ #opening multiple rshells
+jmeji011@hammer.cs.ucr.edu:$ rshell
+execvp failed: No such file or directory
+jmeji011@hammer.cs.ucr.edu:$ ^[[A^[[A^[[A            bin/rshell
+jmeji011@hammer.cs.ucr.edu:$ ^[[A^[[A^[[B            bin/rshell
+jmeji011@hammer.cs.ucr.edu:$ #now there are three rshells running
+jmeji011@hammer.cs.ucr.edu:$ #removing two with exit
+jmeji011@hammer.cs.ucr.edu:$ exit
+jmeji011@hammer.cs.ucr.edu:$ exit
+jmeji011@hammer.cs.ucr.edu:$ #openning      ing two rshells using &&
+jmeji011@hammer.cs.ucr.edu:$ bin/rshell && bin/rshell
+jmeji011@hammer.cs.ucr.edu:$ #exiting two with &&
+jmeji011@hammer.cs.ucr.edu:$ exit && exit
+jmeji011@hammer.cs.ucr.edu:$ #showing that ls variations work
+jmeji011@hammer.cs.ucr.edu:$ ls
+bin  LICENSE  Makefile	README.md  src	tests
+jmeji011@hammer.cs.ucr.edu:$ ls -a
+.  ..  bin  .git  LICENSE  Makefile  README.md	src  tests
+jmeji011@hammer.cs.ucr.edu:$ ls -l
+total 40
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:40 bin
+-rw------- 1 jmeji011 csmajs 18047 Apr 19 18:22 LICENSE
+-rw------- 1 jmeji011 csmajs   273 Apr 20 00:27 Makefile
+-rw------- 1 jmeji011 csmajs   480 Apr 20 00:19 README.md
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:27 src
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:39 tests
+jmeji011@hammer.cs.ucr.edu:$ ls -a -l
+total 52
+drwx------ 6 jmeji011 csmajs  4096 Apr 20 00:40 .
+drwx------ 6 jmeji011 csmajs  4096 Apr 19 18:21 ..
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:40 bin
+drwx------ 8 jmeji011 csmajs  4096 Apr 20 00:20 .git
+-rw------- 1 jmeji011 csmajs 18047 Apr 19 18:22 LICENSE
+-rw------- 1 jmeji011 csmajs   273 Apr 20 00:27 Makefile
+-rw------- 1 jmeji011 csmajs   480 Apr 20 00:19 README.md
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:27 src
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:39 tests
+jmeji011@hammer.cs.ucr.edu:$ ls -al
+total 52
+drwx------ 6 jmeji011 csmajs  4096 Apr 20 00:40 .
+drwx------ 6 jmeji011 csmajs  4096 Apr 19 18:21 ..
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:40 bin
+drwx------ 8 jmeji011 csmajs  4096 Apr 20 00:20 .git
+-rw------- 1 jmeji011 csmajs 18047 Apr 19 18:22 LICENSE
+-rw------- 1 jmeji011 csmajs   273 Apr 20 00:27 Makefile
+-rw------- 1 jmeji011 csmajs   480 Apr 20 00:19 README.md
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:27 src
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:39 tests
+jmeji011@hammer.cs.ucr.edu:$ ls && ls -h sadfsd                  ls -dsfjnsfjdgn || ls
+ls: invalid option -- 'j'
+Try `ls --help' for more information.
+bin  LICENSE  Makefile	README.md  src	tests
+jmeji011@hammer.cs.ucr.edu:$ ls  tree || ls -l ;         ;ls -l
+execvp failed: No such file or directory
+total 40
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:40 bin
+-rw------- 1 jmeji011 csmajs 18047 Apr 19 18:22 LICENSE
+-rw------- 1 jmeji011 csmajs   273 Apr 20 00:27 Makefile
+-rw------- 1 jmeji011 csmajs   480 Apr 20 00:19 README.md
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:27 src
+drwx------ 2 jmeji011 csmajs  4096 Apr 20 00:39 tests
+jmeji011@hammer.cs.ucr.edu:$ #now showing connectors by themselves
+jmeji011@hammer.cs.ucr.edu:$ &&
+jmeji011@hammer.cs.ucr.edu:$ ||
+jmeji011@hammer.cs.ucr.edu:$ ;
+jmeji011@hammer.cs.ucr.edu:$ show    #shwoing     owing the connectors mixed together
+jmeji011@hammer.cs.ucr.edu:$ ls -a; echo hello && mkdir test||     || echo world; git status
+.  ..  bin  .git  LICENSE  Makefile  README.md	src  tests
+hello
+# On branch exec
+# Changed but not updated:
+#   (use "git add/rm <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	deleted:    src/a.out
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	bin/
+#	tests/
+no changes added to commit (use "git add" and/or "git commit -a")
+jmeji011@hammer.cs.ucr.edu:$ #showing that directory test was made and world was not echoed
+jmeji011@hammer.cs.ucr.edu:$ ls
+bin  LICENSE  Makefile	README.md  src	test  tests
+jmeji011@hammer.cs.ucr.edu:$ #bug found when echoing i quotes
+jmeji011@hammer.cs.ucr.edu:$ echo "hello"
+"hello"
+jmeji011@hammer.cs.ucr.edu:$ && &
+jmeji011@hammer.cs.ucr.edu:$ || |
+execvp failed: No such file or directory
+jmeji011@hammer.cs.ucr.edu:$ ; ;
+jmeji011@hammer.cs.ucr.edu:$ #showing that comments are ingo nored 
+jmeji011@hammer.cs.ucr.edu:$ ls -a #nfdngsigjnfsdngkljsfdngjndfsjkngkdsfkljgnjfsgj
+.  ..  bin  .git  LICENSE  Makefile  README.md	src  test  tests
+jmeji011@hammer.cs.ucr.edu:$ ls -a ; ;
+.  ..  bin  .git  LICENSE  Makefile  README.md	src  test  tests
+jmeji011@hammer.cs.ucr.edu:$ ls -a -c -g -f - i -    i - m  m -o
+total 56
+19323383 drwx------ 7  4096 Apr 20 00:48 .
+17692442 drwx------ 6  4096 Apr 19 18:21 ..
+19323384 drwx------ 8  4096 Apr 20 00:20 .git
+ 2588568 -rw------- 1 18047 Apr 19 18:22 LICENSE
+ 4939664 drwx------ 2  4096 Apr 20 00:27 src
+25259425 -rw------- 1   273 Apr 20 00:27 Makefile
+  211745 -rw------- 1   480 Apr 20 00:19 README.md
+25259422 drwx------ 2  4096 Apr 20 00:39 tests
+ 5545199 drwx------ 2  4096 Apr 20 00:40 bin
+ 9279922 drwx------ 2  4096 Apr 20 00:48 test
+jmeji011@hammer.cs.ucr.edu:$ ls {{}}{}{} || pwd;
+ls: cannot access {{}}{}{}: No such file or directory
+/home/csmajs/jmeji011/cs100/rshell
+jmeji011@hammer.cs.ucr.edu:$ pwd	ls	ls-a
+pwd: ignoring non-option arguments
+/home/csmajs/jmeji011/cs100/rshell
+jmeji011@hammer.cs.ucr.edu:$ pwd	&& ls s ; lse  -a
+/home/csmajs/jmeji011/cs100/rshell
+bin  LICENSE  Makefile	README.md  src	test  tests
+.  ..  bin  .git  LICENSE  Makefile  README.md	src  test  tests
+jmeji011@hammer.cs.ucr.edu:$ #still worked with tabs
+jmeji011@hammer.cs.ucr.edu:$ true || pwd
+jmeji011@hammer.cs.ucr.edu:$ false || pwd
+/home/csmajs/jmeji011/cs100/rshell
+jmeji011@hammer.cs.ucr.edu:$ #showd ed && and || worked
+jmeji011@hammer.cs.ucr.edu:$ cat Re EAD	ME.md         README.md
+#rshell
+rshell is an imitation of the BASH terminal. This implementation allows the use 
+of connectors such as `||`, `&&` and `;`. Anything after a `#` is a comment and 
+is ignored by the program. The command `exit` closes the program.
+
+#How to run rshell
+```
+$git clone https://github.com/jmeji011/rshell.git
+$cd rshell
+$git checkout hw0
+$make
+$bin/rshell
+```
+
+#Bugs
+Echo with quotes do not work with this shell implementation.
+
+`echo "hello"` , This will display `"hello"`. 
+
+
+
+jmeji011@hammer.cs.ucr.edu:$ ^[[A^[[B        cat make
+cat: make: No such file or directory
+jmeji011@hammer.cs.ucr.edu:$ cat MA akefile
+COMPILER = g++
+CFLAGS = -ansi -pedantic -Wall -Werror
+RESULT = ./bin/rshell
+DIRECTORY = ./src/main.cpp
+all: 
+	mkdir -p ./bin
+	$(COMPILER) $(CFLAGS) $(DIRECTORY) -o $(RESULT)
+
+rshell: 
+	mkdir -p ./bin
+	$(COMPILER) $(CFLAGS) $(DIRECTORY) -o $(RESULT)  
+clean:
+	rm -rf ./bin
+
+jmeji011@hammer.cs.ucr.edu:$ exit
+~/cs100/rshell
+jmeji011@hammer $ exot[K[Kit
+exit
+
+Script done on Mon 20 Apr 2015 01:02:17 AM PDT
