@@ -28,7 +28,7 @@ This program can handle the following flags after calling ls:
 `-l`, `-a`, `-R`
 It can also handle the flags when they are combined.
 
-#How to run rshell
+#How to run ls
 ```
 $git clone https://github.com/jmeji011/rshell.git
 $cd rshell
