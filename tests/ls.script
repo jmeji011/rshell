@@ -1,0 +1,944 @@
+Script started on Sat 02 May 2015 02:58:14 AM PDT
+~
+jmeji011@hammer $ cd rshell[K[K[K[K[K[K[K[K[Kcd cs100/rshell
+~/cs100/rshell
+jmeji011@hammer $ make
+mkdir -p ./bin
+g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
+g++ -ansi -pedantic -Wall -Werror ./src/ls.cpp -o ./bin/ls
+~/cs100/rshell
+jmeji011@hammer $ bin/ls
+.:
+LICENSE  Makefile  README.md  [1;34mbin/[0m  [1;34msrc/[0m  [1;34mtests/[0m  
+
+~/cs100/rshell
+jmeji011@hammer $ bin/ls -a
+.:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  [5;30m[1;34m.git/[0m  LICENSE  Makefile  README.md  [1;34mbin/[0m  [1;34msrc/[0m  [1;34mtests/[0m  
+
+~/cs100/rshell
+jmeji011@hammer $ bin/ls -a[Kl
+.:
+total 40
+-rw------- 1 jmeji011 csmajs 18047 Apr 19 18:22 LICENSE
+-rw------- 1 jmeji011 csmajs   441 May  2 02:44 Makefile
+-rw------- 1 jmeji011 csmajs  1066 May  2 02:42 README.md
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:52 [1;34mbin/[0m
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:49 [1;34msrc/[0m
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:49 [1;34mtests/[0m
+
+~/cs100/rshell
+jmeji011@hammer $ bin/ls -l[KR
+.:
+LICENSE  Makefile  README.md  [1;34mbin/[0m  [1;34msrc/[0m  [1;34mtests/[0m  
+
+./bin:
+[1;32mls[0m*  [1;32mrshell[0m*  
+
+./src:
+ls.cpp  ls.o  main.cpp  
+
+./tests:
+exec.script  ls.script  
+
+~/cs100/rshell
+jmeji011@hammer $ bin/ls -R[KaR
+.:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  [5;30m[1;34m.git/[0m  LICENSE  Makefile  README.md  [1;34mbin/[0m  [1;34msrc/[0m  [1;34mtests/[0m  
+
+./.git:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  COMMIT_EDITMSG  HEAD  ORIG_HEAD  [1;34mbranches/[0m  config  description  [1;34mhooks/[0m  index  [1;34minfo/[0m  [1;34mlogs/[0m  [1;34mobjects/[0m  packed-refs  [1;34mrefs/[0m  
+
+./.git/branches:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  
+
+./.git/hooks:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  [1;32mapplypatch-msg.sample[0m*  [1;32mcommit-msg.sample[0m*  [1;32mpost-update.sample[0m*  [1;32mpre-applypatch.sample[0m*  [1;32mpre-commit.sample[0m*  [1;32mpre-push.sample[0m*  [1;32mpre-rebase.sample[0m*  [1;32mprepare-commit-msg.sample[0m*  [1;32mupdate.sample[0m*  
+
+./.git/info:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  exclude  
+
+./.git/logs:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  HEAD  [1;34mrefs/[0m  
+
+./.git/logs/refs:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  [1;34mheads/[0m  [1;34mremotes/[0m  
+
+./.git/logs/refs/heads:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  exec  ls  master  
+
+./.git/logs/refs/remotes:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  [1;34morigin/[0m  
+
+./.git/logs/refs/remotes/origin:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  HEAD  exec  master  
+
+./.git/objects:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  [1;34m01/[0m  [1;34m03/[0m  [1;34m04/[0m  [1;34m0b/[0m  [1;34m0c/[0m  [1;34m11/[0m  [1;34m12/[0m  [1;34m13/[0m  [1;34m19/[0m  [1;34m25/[0m  [1;34m2b/[0m  [1;34m2d/[0m  [1;34m37/[0m  [1;34m39/[0m  [1;34m3a/[0m  [1;34m3b/[0m  [1;34m3d/[0m  [1;34m44/[0m  [1;34m45/[0m  [1;34m47/[0m  [1;34m49/[0m  [1;34m4d/[0m  [1;34m50/[0m  [1;34m52/[0m  [1;34m62/[0m  [1;34m6a/[0m  [1;34m6d/[0m  [1;34m6e/[0m  [1;34m72/[0m  [1;34m74/[0m  [1;34m7a/[0m  [1;34m7d/[0m  [1;34m8a/[0m  [1;34m8c/[0m  [1;34m92/[0m  [1;34m96/[0m  [1;34m99/[0m  [1;34m9d/[0m  [1;34m9f/[0m  [1;34ma3/[0m  [1;34ma5/[0m  [1;34ma7/[0m  [1;34mab/[0m  [1;34mac/[0m  [1;34mae/[0m  [1;34mc9/[0m  [1;34mca/[0m  [1;34md1/[0m  [1;34md7/[0m  [1;34md8/[0m  [1;34md9/[0m  [1;34mda/[0m  [1;34me1/[0m  [1;34me2/[0m  [1;34me5/[0m  [1;34me6/[0m  [1;34me8/[0m  [1;34mf4/[0m  [1;34mf8/[0m  [1;34minfo/[0m  [1;34mpack/[0m  
+
+./.git/objects/01:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  82dc11e30490c25538125da3cde894cd295895  
+
+./.git/objects/03:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  dfbb6dfec12a4e175f1caae8531b22a441dbad  
+
+./.git/objects/04:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  a037ac1cf1d115a773b0ae29ab5d49e9567b5b  
+
+./.git/objects/0b:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  a3a02fe3cb6c9a3611935e0d68da9f548dd645  
+
+./.git/objects/0c:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  44162a05d32ea9edc72102d2f2072740c24141  6f0c23b5fc8ebaf35d2bf3b822b4b18f4a7e89  
+
+./.git/objects/11:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  66c256a728f97fcfa3d07b0df3115f40ebec79  
+
+./.git/objects/12:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  1657f7ffe3d87352b38da278120b2451ee2ebf  
+
+./.git/objects/13:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  e6f38bdbad907f9340531c65935606dcbd6aa4  
+
+./.git/objects/19:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  df52ce8dd4ef24dfb5491922d24eb7943158f2  
+
+./.git/objects/25:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  43fde165cedf4bf46d6eb71ff69db530b0f36d  
+
+./.git/objects/2b:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  3ca115d4321015a68237fa356c936a29fb1bc1  
+
+./.git/objects/2d:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  47279f2e6e3e22080b6c75884ac7403bdb9318  
+
+./.git/objects/37:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  e26e8c42fbafe5f8b2552fb319171f02c1955e  
+
+./.git/objects/39:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  3fac21d759b69c4004edf79ed789b5412903f1  
+
+./.git/objects/3a:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  8ba073fadd8ab0327edaacd374c63597b0ad20  
+
+./.git/objects/3b:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  2ca8af07dfc070e0f67dd4736262b77d21c162  
+
+./.git/objects/3d:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  081f38b965ab18e4ce29e07949ed110bd6f377  
+
+./.git/objects/44:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  5d92647834d011521d1597e2630a922a93b546  6c119a03f56d2c25a9e672fcab18bc2bf95651  
+
+./.git/objects/45:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  bbeb6fa3707a52c63d7cc7a857c4358029ec8a  
+
+./.git/objects/47:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  274ef6d5cc064d4ef262bbef8d7292802836fb  
+
+./.git/objects/49:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  336fe942a8d78744b594e14b265b28f38983b6  f23c94d070adc087abc893bc2850d2acece7f7  
+
+./.git/objects/4d:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  60e805b3f1ddb0fd49a66d037f434606b30574  
+
+./.git/objects/50:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  16f5145bb71a8537161033687c55438642cced  
+
+./.git/objects/52:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  1d033bfcb1466f7b63886bb8d6f938ac8768e5  
+
+./.git/objects/62:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  9edb65c8dc975dd0ff4efe05dc80ed74ee88e4  
+
+./.git/objects/6a:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  ce37deacd8de93d2a7d1518c9714f130bbeac4  
+
+./.git/objects/6d:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  263409078e4d61da7aae0ba25cfe9f7b26e43a  732cb5412f56e06261bdc696025ad67a722230  
+
+./.git/objects/6e:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  3dde1e0877e46785074b9d50ff40f735323ddf  451705849920a0a4307379f309dde560944fa2  b27ad8ac0e0f6872bc0cf45a48539a44b4749e  
+
+./.git/objects/72:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  3ed3ef407787b2903414e6f8532badb3c89f2d  c85fb6f6deb5eb916347659430662a8aa1bf33  
+
+./.git/objects/74:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  8eeaa0203619d41ee1dc828d7a5ff196fc9554  
+
+./.git/objects/7a:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  a6d3d6f11fa751c4271c2ebd685d27f28f5901  
+
+./.git/objects/7d:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  31a2d45ff3c33c4618f6a605ac9e922cf33175  9c9caaa8f33843a3f4e0f310163393156cb9d2  
+
+./.git/objects/8a:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  be40598448dc69bfac1f677baa92091cb4f2fc  
+
+./.git/objects/8c:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  8ff8d054642509e4840148ef0d5b511117a5cd  db8451d9b90c1d4000c6f22eb86471a4568be6  
+
+./.git/objects/92:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  045663f9e3f282963a1d95eb4d11220fdd927a  
+
+./.git/objects/96:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  c1f1e8fe3597188a88a0e62d71fa08d583a71a  
+
+./.git/objects/99:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  8b9a95ddc832f36fe487c8fe4738f33661a411  
+
+./.git/objects/9d:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  5c83b927510bc5e1e89ca608646b33273a324e  
+
+./.git/objects/9f:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  885a1b3087df19842b0e5c5ebdad9395192499  
+
+./.git/objects/a3:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  ff8ed471530ed411fbc419d5caf2e76bfda562  
+
+./.git/objects/a5:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  348f9a003483333b90b8235c9ad6a17886bd0b  
+
+./.git/objects/a7:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  ce2e3b0840e31c9446e1df2eb66dac1026a25f  
+
+./.git/objects/ab:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  f20f9481e87986f02ec8b59e867fed7a925486  
+
+./.git/objects/ac:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  afd8e220537d99d810027d3e72001da3b686a3  
+
+./.git/objects/ae:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  e20702a2684f8e6a9d357462b6bc593ff18b33  
+
+./.git/objects/c9:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  56d58dc792d88b379337b85cb10b61879b0aaf  
+
+./.git/objects/ca:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  4e5b5b6880789b6bdcb9c3b594323c2cc00e47  
+
+./.git/objects/d1:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  b5c0512b5985b5269a44aae4a20057074eece5  
+
+./.git/objects/d7:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  2c8511096df7b1eb7caad909f746d58d7a4a72  
+
+./.git/objects/d8:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  10ed1edd642c70cd52800434f14803c7737689  
+
+./.git/objects/d9:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  3b5f5d6e0ebf2d6640207ad9d4955ee105021c  48ed50d1905f889d62096741ea1b9dfd824014  
+
+./.git/objects/da:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  f417c90befb51b22f3a33d3698319cb9b36a82  
+
+./.git/objects/e1:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  12497cff5a0faead244ca4ac05ec703d0fdec5  
+
+./.git/objects/e2:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  59fa9a6829bf3bb21814b560493baa0a14bf1a  9061a8180f765e634947a6c995991b3ab66b7b  
+
+./.git/objects/e5:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  0351b42f338d4182fd85396c390a3df22ea1a6  39a9583079569e1f930a0ad3251287e1c6cd9e  
+
+./.git/objects/e6:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  5a414ad099917759bfd107d59ac88b57bbb1db  
+
+./.git/objects/e8:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  f431bf5061e0d3f9d72611e7e5b1480c745779  
+
+./.git/objects/f4:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  23372dbfc6b7b66511bd6d0fc3b29ea3801a23  
+
+./.git/objects/f8:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  d5cb77b8ad2b5e1d838fc73eacf96fc0bc52ee  
+
+./.git/objects/info:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  
+
+./.git/objects/pack:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  
+
+./.git/refs:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  [1;34mheads/[0m  [1;34mremotes/[0m  [1;34mtags/[0m  
+
+./.git/refs/heads:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  exec  ls  master  
+
+./.git/refs/remotes:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  [1;34morigin/[0m  
+
+./.git/refs/remotes/origin:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  HEAD  exec  master  
+
+./.git/refs/tags:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  hw0  
+
+./bin:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  [1;32mls[0m*  [1;32mrshell[0m*  
+
+./src:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  ls.cpp  ls.o  main.cpp  
+
+./tests:
+[5;30m[1;34m./[0m  [5;30m[1;34m../[0m  exec.script  ls.script  
+
+~/cs100/rshell
+jmeji011@hammer $ bin/ls -aR[Kl
+.:
+total 40
+drwx------ 6 jmeji011 csmajs  4096 May  2 02:46 [5;30m[1;34m./[0m
+drwx------ 6 jmeji011 csmajs  4096 Apr 22 13:11 [5;30m[1;34m../[0m
+drwx------ 8 jmeji011 csmajs  4096 May  2 02:29 [5;30m[1;34m.git/[0m
+-rw------- 1 jmeji011 csmajs 18047 Apr 19 18:22 LICENSE
+-rw------- 1 jmeji011 csmajs   441 May  2 02:44 Makefile
+-rw------- 1 jmeji011 csmajs  1066 May  2 02:42 README.md
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:52 [1;34mbin/[0m
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:49 [1;34msrc/[0m
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:49 [1;34mtests/[0m
+
+~/cs100/rshell
+jmeji011@hammer $ bin/ls -al[CR
+.:
+total 40
+drwx------ 6 jmeji011 csmajs  4096 May  2 02:46 [5;30m[1;34m./[0m
+drwx------ 6 jmeji011 csmajs  4096 Apr 22 13:11 [5;30m[1;34m../[0m
+drwx------ 8 jmeji011 csmajs  4096 May  2 02:29 [5;30m[1;34m.git/[0m
+-rw------- 1 jmeji011 csmajs 18047 Apr 19 18:22 LICENSE
+-rw------- 1 jmeji011 csmajs   441 May  2 02:44 Makefile
+-rw------- 1 jmeji011 csmajs  1066 May  2 02:42 README.md
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:52 [1;34mbin/[0m
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:49 [1;34msrc/[0m
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:49 [1;34mtests/[0m
+
+./.git:
+total 52
+drwx------ 8 jmeji011 csmajs 4096 May  2 02:29 [5;30m[1;34m./[0m
+drwx------ 6 jmeji011 csmajs 4096 May  2 02:46 [5;30m[1;34m../[0m
+-rw------- 1 jmeji011 csmajs   15 Apr 20 01:08 COMMIT_EDITMSG
+-rw------- 1 jmeji011 csmajs   19 May  2 02:29 HEAD
+-rw------- 1 jmeji011 csmajs   41 Apr 19 23:42 ORIG_HEAD
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [1;34mbranches/[0m
+-rw------- 1 jmeji011 csmajs  263 Apr 19 18:21 config
+-rw------- 1 jmeji011 csmajs   73 Apr 19 18:21 description
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [1;34mhooks/[0m
+-rw------- 1 jmeji011 csmajs  408 May  2 02:29 index
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [1;34minfo/[0m
+drwx------ 3 jmeji011 csmajs 4096 Apr 19 18:21 [1;34mlogs/[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [1;34mobjects/[0m
+-rw------- 1 jmeji011 csmajs  107 Apr 19 18:21 packed-refs
+drwx------ 5 jmeji011 csmajs 4096 Apr 19 18:21 [1;34mrefs/[0m
+
+./.git/branches:
+total 0
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 8 jmeji011 csmajs 4096 May  2 02:29 [5;30m[1;34m../[0m
+
+./.git/hooks:
+total 36
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 8 jmeji011 csmajs 4096 May  2 02:29 [5;30m[1;34m../[0m
+-rwx------ 1 jmeji011 csmajs  452 Apr 19 18:21 [1;32mapplypatch-msg.sample[0m*
+-rwx------ 1 jmeji011 csmajs  896 Apr 19 18:21 [1;32mcommit-msg.sample[0m*
+-rwx------ 1 jmeji011 csmajs  189 Apr 19 18:21 [1;32mpost-update.sample[0m*
+-rwx------ 1 jmeji011 csmajs  398 Apr 19 18:21 [1;32mpre-applypatch.sample[0m*
+-rwx------ 1 jmeji011 csmajs 1635 Apr 19 18:21 [1;32mpre-commit.sample[0m*
+-rwx------ 1 jmeji011 csmajs 1348 Apr 19 18:21 [1;32mpre-push.sample[0m*
+-rwx------ 1 jmeji011 csmajs 4951 Apr 19 18:21 [1;32mpre-rebase.sample[0m*
+-rwx------ 1 jmeji011 csmajs 1239 Apr 19 18:21 [1;32mprepare-commit-msg.sample[0m*
+-rwx------ 1 jmeji011 csmajs 3611 Apr 19 18:21 [1;32mupdate.sample[0m*
+
+./.git/info:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 8 jmeji011 csmajs 4096 May  2 02:29 [5;30m[1;34m../[0m
+-rw------- 1 jmeji011 csmajs  240 Apr 19 18:21 exclude
+
+./.git/logs:
+total 8
+drwx------ 3 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 8 jmeji011 csmajs 4096 May  2 02:29 [5;30m[1;34m../[0m
+-rw------- 1 jmeji011 csmajs 5369 May  2 02:29 HEAD
+drwx------ 4 jmeji011 csmajs 4096 Apr 19 18:21 [1;34mrefs/[0m
+
+./.git/logs/refs:
+total 8
+drwx------ 4 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 3 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m../[0m
+drwx------ 2 jmeji011 csmajs 4096 May  2 02:29 [1;34mheads/[0m
+drwx------ 3 jmeji011 csmajs 4096 Apr 19 18:21 [1;34mremotes/[0m
+
+./.git/logs/refs/heads:
+total 12
+drwx------ 2 jmeji011 csmajs 4096 May  2 02:29 [5;30m[1;34m./[0m
+drwx------ 4 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m../[0m
+-rw------- 1 jmeji011 csmajs 2931 Apr 20 00:57 exec
+-rw------- 1 jmeji011 csmajs  165 May  2 02:29 ls
+-rw------- 1 jmeji011 csmajs  671 Apr 20 01:08 master
+
+./.git/logs/refs/remotes:
+total 4
+drwx------ 3 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 4 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m../[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:03 [1;34morigin/[0m
+
+./.git/logs/refs/remotes/origin:
+total 12
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:03 [5;30m[1;34m./[0m
+drwx------ 3 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m../[0m
+-rw------- 1 jmeji011 csmajs  190 Apr 19 18:21 HEAD
+-rw------- 1 jmeji011 csmajs 1078 Apr 20 00:57 exec
+-rw------- 1 jmeji011 csmajs  308 Apr 20 01:09 master
+
+./.git/objects:
+total 244
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m./[0m
+drwx------ 8 jmeji011 csmajs 4096 May  2 02:29 [5;30m[1;34m../[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:08 [1;34m01/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:09 [1;34m03/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:08 [1;34m04/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:57 [1;34m0b/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:14 [1;34m0c/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:35 [1;34m11/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:01 [1;34m12/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 22:05 [1;34m13/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 21:42 [1;34m19/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:38 [1;34m25/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:38 [1;34m2b/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [1;34m2d/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:08 [1;34m37/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:29 [1;34m39/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:01 [1;34m3a/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:37 [1;34m3b/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:14 [1;34m3d/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:36 [1;34m44/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 21:42 [1;34m45/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 20:15 [1;34m47/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:57 [1;34m49/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:40 [1;34m4d/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:36 [1;34m50/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:08 [1;34m52/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 22:05 [1;34m62/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 20:15 [1;34m6a/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:19 [1;34m6d/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:57 [1;34m6e/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:20 [1;34m72/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 21:42 [1;34m74/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:40 [1;34m7a/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:10 [1;34m7d/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:46 [1;34m8a/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:02 [1;34m8c/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:29 [1;34m92/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:02 [1;34m96/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [1;34m99/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:57 [1;34m9d/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:05 [1;34m9f/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:40 [1;34ma3/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 21:42 [1;34ma5/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:05 [1;34ma7/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 22:05 [1;34mab/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:02 [1;34mac/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:46 [1;34mae/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:29 [1;34mc9/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:20 [1;34mca/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:05 [1;34md1/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:14 [1;34md7/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:08 [1;34md8/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 20:15 [1;34md9/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:10 [1;34mda/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:09 [1;34me1/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:28 [1;34me2/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:08 [1;34me5/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:09 [1;34me6/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:28 [1;34me8/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:02 [1;34mf4/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:29 [1;34mf8/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [1;34minfo/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [1;34mpack/[0m
+
+./.git/objects/01:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  379 Apr 20 01:08 82dc11e30490c25538125da3cde894cd295895
+
+./.git/objects/03:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:09 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  163 Apr 20 00:09 dfbb6dfec12a4e175f1caae8531b22a441dbad
+
+./.git/objects/04:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:08 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  148 Apr 20 00:08 a037ac1cf1d115a773b0ae29ab5d49e9567b5b
+
+./.git/objects/0b:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:57 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs 1995 Apr 20 00:57 a3a02fe3cb6c9a3611935e0d68da9f548dd645
+
+./.git/objects/0c:
+total 8
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:14 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  380 Apr 19 19:13 44162a05d32ea9edc72102d2f2072740c24141
+-r-------- 1 jmeji011 csmajs   81 Apr 19 19:14 6f0c23b5fc8ebaf35d2bf3b822b4b18f4a7e89
+
+./.git/objects/11:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:35 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  162 Apr 19 23:35 66c256a728f97fcfa3d07b0df3115f40ebec79
+
+./.git/objects/12:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:01 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  176 Apr 20 01:01 1657f7ffe3d87352b38da278120b2451ee2ebf
+
+./.git/objects/13:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 22:05 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   53 Apr 19 22:05 e6f38bdbad907f9340531c65935606dcbd6aa4
+
+./.git/objects/19:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 21:42 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   53 Apr 19 21:42 df52ce8dd4ef24dfb5491922d24eb7943158f2
+
+./.git/objects/25:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:38 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  172 Apr 19 18:38 43fde165cedf4bf46d6eb71ff69db530b0f36d
+
+./.git/objects/2b:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:38 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   53 Apr 19 18:38 3ca115d4321015a68237fa356c936a29fb1bc1
+
+./.git/objects/2d:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   52 Apr 19 18:21 47279f2e6e3e22080b6c75884ac7403bdb9318
+
+./.git/objects/37:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:08 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  291 Apr 20 00:08 e26e8c42fbafe5f8b2552fb319171f02c1955e
+
+./.git/objects/39:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:29 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs 7990 Apr 19 23:29 3fac21d759b69c4004edf79ed789b5412903f1
+
+./.git/objects/3a:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:01 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  162 Apr 20 01:01 8ba073fadd8ab0327edaacd374c63597b0ad20
+
+./.git/objects/3b:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:37 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   85 Apr 19 18:37 2ca8af07dfc070e0f67dd4736262b77d21c162
+
+./.git/objects/3d:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:14 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   53 Apr 19 19:14 081f38b965ab18e4ce29e07949ed110bd6f377
+
+./.git/objects/44:
+total 8
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:36 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  145 Apr 19 23:29 5d92647834d011521d1597e2630a922a93b546
+-r-------- 1 jmeji011 csmajs  172 Apr 19 23:36 6c119a03f56d2c25a9e672fcab18bc2bf95651
+
+./.git/objects/45:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 21:42 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs 1632 Apr 19 21:42 bbeb6fa3707a52c63d7cc7a857c4358029ec8a
+
+./.git/objects/47:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 20:15 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   82 Apr 19 20:15 274ef6d5cc064d4ef262bbef8d7292802836fb
+
+./.git/objects/49:
+total 8
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:57 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  164 Apr 20 00:57 336fe942a8d78744b594e14b265b28f38983b6
+-r-------- 1 jmeji011 csmajs   51 Apr 20 00:57 f23c94d070adc087abc893bc2850d2acece7f7
+
+./.git/objects/4d:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:40 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  674 Apr 19 19:40 60e805b3f1ddb0fd49a66d037f434606b30574
+
+./.git/objects/50:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:36 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  171 Apr 19 23:36 16f5145bb71a8537161033687c55438642cced
+
+./.git/objects/52:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:08 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  163 Apr 20 00:08 1d033bfcb1466f7b63886bb8d6f938ac8768e5
+
+./.git/objects/62:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 22:05 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   81 Apr 19 22:05 9edb65c8dc975dd0ff4efe05dc80ed74ee88e4
+
+./.git/objects/6a:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 20:15 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   52 Apr 19 20:15 ce37deacd8de93d2a7d1518c9714f130bbeac4
+
+./.git/objects/6d:
+total 8
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:19 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  313 Apr 20 00:19 263409078e4d61da7aae0ba25cfe9f7b26e43a
+-r-------- 1 jmeji011 csmajs 1036 Apr 19 20:15 732cb5412f56e06261bdc696025ad67a722230
+
+./.git/objects/6e:
+total 12
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:57 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  147 Apr 20 00:20 3dde1e0877e46785074b9d50ff40f735323ddf
+-r-------- 1 jmeji011 csmajs  204 Apr 20 00:57 451705849920a0a4307379f309dde560944fa2
+-r-------- 1 jmeji011 csmajs  295 Apr 20 00:10 b27ad8ac0e0f6872bc0cf45a48539a44b4749e
+
+./.git/objects/72:
+total 8
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:20 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   86 Apr 20 00:20 3ed3ef407787b2903414e6f8532badb3c89f2d
+-r-------- 1 jmeji011 csmajs   81 Apr 19 18:38 c85fb6f6deb5eb916347659430662a8aa1bf33
+
+./.git/objects/74:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 21:42 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   81 Apr 19 21:42 8eeaa0203619d41ee1dc828d7a5ff196fc9554
+
+./.git/objects/7a:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:40 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  169 Apr 19 19:40 a6d3d6f11fa751c4271c2ebd685d27f28f5901
+
+./.git/objects/7d:
+total 8
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:10 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs 1624 Apr 19 22:05 31a2d45ff3c33c4618f6a605ac9e922cf33175
+-r-------- 1 jmeji011 csmajs  148 Apr 20 00:10 9c9caaa8f33843a3f4e0f310163393156cb9d2
+
+./.git/objects/8a:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:46 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  164 Apr 19 23:46 be40598448dc69bfac1f677baa92091cb4f2fc
+
+./.git/objects/8c:
+total 8
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:02 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   53 Apr 19 19:02 8ff8d054642509e4840148ef0d5b511117a5cd
+-r-------- 1 jmeji011 csmajs 7713 Apr 19 18:21 db8451d9b90c1d4000c6f22eb86471a4568be6
+
+./.git/objects/92:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:29 [5;30m[1;34m./[0m
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs 7774 Apr 19 23:29 045663f9e3f282963a1d95eb4d11220fdd927a
+
+./.git/objects/96:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:02 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   81 Apr 19 19:02 c1f1e8fe3597188a88a0e62d71fa08d583a71a
+
+./.git/objects/99:
+total 4
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  122 Apr 19 18:21 8b9a95ddc832f36fe487c8fe4738f33661a411
+
+./.git/objects/9d:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:57 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   56 Apr 20 00:57 5c83b927510bc5e1e89ca608646b33273a324e
+
+./.git/objects/9f:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:05 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  148 Apr 20 00:05 885a1b3087df19842b0e5c5ebdad9395192499
+
+./.git/objects/a3:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:40 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   81 Apr 19 19:40 ff8ed471530ed411fbc419d5caf2e76bfda562
+
+./.git/objects/a5:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 21:42 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  167 Apr 19 21:42 348f9a003483333b90b8235c9ad6a17886bd0b
+
+./.git/objects/a7:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:05 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  177 Apr 20 00:05 ce2e3b0840e31c9446e1df2eb66dac1026a25f
+
+./.git/objects/ab:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 22:05 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  165 Apr 19 22:05 f20f9481e87986f02ec8b59e867fed7a925486
+
+./.git/objects/ac:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:02 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  276 Apr 19 19:02 afd8e220537d99d810027d3e72001da3b686a3
+
+./.git/objects/ae:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:46 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  148 Apr 19 23:46 e20702a2684f8e6a9d357462b6bc593ff18b33
+
+./.git/objects/c9:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:29 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  129 Apr 19 23:29 56d58dc792d88b379337b85cb10b61879b0aaf
+
+./.git/objects/ca:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:20 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  175 Apr 20 00:20 4e5b5b6880789b6bdcb9c3b594323c2cc00e47
+
+./.git/objects/d1:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:05 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+-r-------- 1 jmeji011 csmajs  288 Apr 20 00:05 b5c0512b5985b5269a44aae4a20057074eece5
+
+./.git/objects/d7:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:14 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  173 Apr 19 19:14 2c8511096df7b1eb7caad909f746d58d7a4a72
+
+./.git/objects/d8:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m./[0m
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  177 Apr 20 01:08 10ed1edd642c70cd52800434f14803c7737689
+
+./.git/objects/d9:
+total 8
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 20:15 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs   53 Apr 19 19:40 3b5f5d6e0ebf2d6640207ad9d4955ee105021c
+-r-------- 1 jmeji011 csmajs  172 Apr 19 20:15 48ed50d1905f889d62096741ea1b9dfd824014
+
+./.git/objects/da:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:10 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  165 Apr 20 00:10 f417c90befb51b22f3a33d3698319cb9b36a82
+
+./.git/objects/e1:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:09 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  148 Apr 20 00:09 12497cff5a0faead244ca4ac05ec703d0fdec5
+
+./.git/objects/e2:
+total 8
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:28 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  167 Apr 19 23:28 59fa9a6829bf3bb21814b560493baa0a14bf1a
+-r-------- 1 jmeji011 csmajs  115 Apr 19 23:28 9061a8180f765e634947a6c995991b3ab66b7b
+
+./.git/objects/e5:
+total 8
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  163 Apr 20 01:08 0351b42f338d4182fd85396c390a3df22ea1a6
+-r-------- 1 jmeji011 csmajs   18 Apr 19 23:29 39a9583079569e1f930a0ad3251287e1c6cd9e
+
+./.git/objects/e6:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 00:09 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  296 Apr 20 00:09 5a414ad099917759bfd107d59ac88b57bbb1db
+
+./.git/objects/e8:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:28 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  177 Apr 19 23:28 f431bf5061e0d3f9d72611e7e5b1480c745779
+
+./.git/objects/f4:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 19:02 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  171 Apr 19 19:02 23372dbfc6b7b66511bd6d0fc3b29ea3801a23
+
+./.git/objects/f8:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 23:29 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+-r-------- 1 jmeji011 csmajs  159 Apr 19 23:29 d5cb77b8ad2b5e1d838fc73eacf96fc0bc52ee
+
+./.git/objects/info:
+total 0
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+
+./.git/objects/pack:
+total 0
+drwx------ 2 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 63 jmeji011 csmajs 4096 Apr 20 01:08 [5;30m[1;34m../[0m
+
+./.git/refs:
+total 12
+drwx------ 5 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 8 jmeji011 csmajs 4096 May  2 02:29 [5;30m[1;34m../[0m
+drwx------ 2 jmeji011 csmajs 4096 May  2 02:29 [1;34mheads/[0m
+drwx------ 3 jmeji011 csmajs 4096 Apr 19 18:21 [1;34mremotes/[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:13 [1;34mtags/[0m
+
+./.git/refs/heads:
+total 12
+drwx------ 2 jmeji011 csmajs 4096 May  2 02:29 [5;30m[1;34m./[0m
+drwx------ 5 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m../[0m
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+-rw------- 1 jmeji011 csmajs   41 Apr 20 00:57 exec
+-rw------- 1 jmeji011 csmajs   41 May  2 02:29 ls
+-rw------- 1 jmeji011 csmajs   41 Apr 20 01:08 master
+
+./.git/refs/remotes:
+total 4
+drwx------ 3 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m./[0m
+drwx------ 5 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m../[0m
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:09 [1;34morigin/[0m
+
+./.git/refs/remotes/origin:
+total 12
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:09 [5;30m[1;34m./[0m
+drwx------ 3 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m../[0m
+-rw------- 1 jmeji011 csmajs   32 Apr 19 18:21 HEAD
+-rw------- 1 jmeji011 csmajs   41 Apr 20 00:57 exec
+do_ypcall: clnt_call: RPC: Unable to send; errno = Operation not permitted
+-rw------- 1 jmeji011 csmajs   41 Apr 20 01:09 master
+
+./.git/refs/tags:
+total 4
+drwx------ 2 jmeji011 csmajs 4096 Apr 20 01:13 [5;30m[1;34m./[0m
+drwx------ 5 jmeji011 csmajs 4096 Apr 19 18:21 [5;30m[1;34m../[0m
+-rw------- 1 jmeji011 csmajs   41 Apr 20 01:13 hw0
+
+./bin:
+total 8
+drwx------ 2 jmeji011 csmajs 4096 May  2 02:52 [5;30m[1;34m./[0m
+drwx------ 6 jmeji011 csmajs 4096 May  2 02:46 [5;30m[1;34m../[0m
+-rwx------ 1 jmeji011 csmajs 63492 May  2 02:52 [1;32mls[0m*
+-rwx------ 1 jmeji011 csmajs 20617 May  2 02:52 [1;32mrshell[0m*
+
+./src:
+total 12
+drwx------ 2 jmeji011 csmajs 4096 May  2 02:49 [5;30m[1;34m./[0m
+drwx------ 6 jmeji011 csmajs 4096 May  2 02:46 [5;30m[1;34m../[0m
+-rw------- 1 jmeji011 csmajs 10114 May  2 02:49 ls.cpp
+-rw------- 1 jmeji011 csmajs 139672 May  2 02:49 ls.o
+-rw------- 1 jmeji011 csmajs 4500 Apr 20 00:58 main.cpp
+
+./tests:
+total 8
+drwx------ 2 jmeji011 csmajs 4096 May  2 02:49 [5;30m[1;34m./[0m
+drwx------ 6 jmeji011 csmajs 4096 May  2 02:46 [5;30m[1;34m../[0m
+-rw------- 1 jmeji011 csmajs 7436 Apr 20 00:58 exec.script
+-rw------- 1 jmeji011 csmajs 32768 May  2 02:53 ls.script
+
+~/cs100/rshell
+jmeji011@hammer $ bin/ls -alR[1PlR
+.:
+total 40
+-rw------- 1 jmeji011 csmajs 18047 Apr 19 18:22 LICENSE
+-rw------- 1 jmeji011 csmajs   441 May  2 02:44 Makefile
+-rw------- 1 jmeji011 csmajs  1066 May  2 02:42 README.md
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:52 [1;34mbin/[0m
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:49 [1;34msrc/[0m
+drwx------ 2 jmeji011 csmajs  4096 May  2 02:49 [1;34mtests/[0m
+
+./bin:
+total 8
+-rwx------ 1 jmeji011 csmajs 63492 May  2 02:52 [1;32mls[0m*
+-rwx------ 1 jmeji011 csmajs 20617 May  2 02:52 [1;32mrshell[0m*
+
+./src:
+total 12
+-rw------- 1 jmeji011 csmajs 10114 May  2 02:49 ls.cpp
+-rw------- 1 jmeji011 csmajs 139672 May  2 02:49 ls.o
+-rw------- 1 jmeji011 csmajs 4500 Apr 20 00:58 main.cpp
+
+./tests:
+total 8
+-rw------- 1 jmeji011 csmajs 7436 Apr 20 00:58 exec.script
+-rw------- 1 jmeji011 csmajs 32768 May  2 02:53 ls.script
+
+~/cs100/rshell
+jmeji011@hammer $ bin/ls -lR [K[K ./src /[K./test [Ks #multiple directori[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K
+./src:
+total 12
+-rw------- 1 jmeji011 csmajs 10114 May  2 02:49 ls.cpp
+-rw------- 1 jmeji011 csmajs 139672 May  2 02:49 ls.o
+-rw------- 1 jmeji011 csmajs 4500 Apr 20 00:58 main.cpp
+
+./tests:
+total 8
+-rw------- 1 jmeji011 csmajs 7436 Apr 20 00:58 exec.script
+-rw------- 1 jmeji011 csmajs 32768 May  2 02:53 ls.script
+
+~/cs100/rshell
+jmeji011@hammer $ exit
+exit
+
+Script done on Sat 02 May 2015 03:00:35 AM PDT

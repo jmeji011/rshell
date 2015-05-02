@@ -22,5 +22,23 @@ Echo with quotes do not work with this shell implementation.
 
 `echo "hello"` , This will display `"hello"`. 
 
+#LS
+This program imitates the ls command found in the bash terminal.
+This program can handle the following flags after calling ls:
+`-l`, `-a`, `-R`
+It can also handle the flags when they are combined.
+
+#How to run rshell
+```
+$git clone https://github.com/jmeji011/rshell.git
+$cd rshell
+$git checkout hw1
+$make
+$bin/ls
+```
+#LS Bugs
+The directories and filenames are not aligned during use of standard ls in comparison
+to bashs ls. 
+
 
 
