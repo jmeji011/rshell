@@ -1,0 +1,86 @@
+Script started on Mon 18 May 2015 03:51:55 AM PDT
+~
+jmeji011@hammer $ cd cs100/rshell
+~/cs100/rshell
+jmeji011@hammer $ make
+mkdir -p ./bin
+g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
+g++ -ansi -pedantic -Wall -Werror ./src/ls.cpp -o ./bin/ls
+~/cs100/rshell
+jmeji011@hammer $ bin/rshell
+jmeji011@hammer.cs.ucr.edu:$ ls
+bin  LICENSE  Makefile	README.md  src	tests
+jmeji011@hammer.cs.ucr.edu:$ touch test    file1
+jmeji011@hammer.cs.ucr.edu:$ vim file1
+[?1000h7[?47h[?1h=[1;29r[m[H[2J[29;1H"file1" 0L, 0C[>c[1;1H[4m[33m  1 [m[4m                                                                                   [m[2;1H[1m[34m~                                                                                      [3;1H~                                                                                      [4;1H~                                                                                      [5;1H~                                                                                      [6;1H~                                                                                      [7;1H~                                                                                      [8;1H~                                                                                      [9;1H~                                                                                      [10;1H~                                                                                      [11;1H~                                                                                      [12;1H~                                                                                      [13;1H~                                                                                      [14;1H~                                                                                      [15;1H~                                                                                      [16;1H~                                                                                      [17;1H~                                                                                      [18;1H~                                                                                      [19;1H~                                                                                      [20;1H~                                                                                      [21;1H~                                                                                      [22;1H~                                                                                      [23;1H~                                                                                      [24;1H~                                                                                      [25;1H~                                                                                      [26;1H~                                                                                      [27;1H~                                                                                      [28;1H~                                                                                      [m[29;70H0,0-1[9CAll[1;5H[?1000l[?1002hP+q436f\P+q6b75\P+q6b64\P+q6b72\P+q6b6c\P+q2332\P+q2334\P+q2569\P+q2a37\P+q6b31\[29;1H[1m-- INSERT --[m[29;13H[K[29;70H0,1[11CAll[1;5H[4m[33m [m[4mB[m[29;70H1,2[1;6H[4m[33m [m[4m [m[29;72H1[1;5H[4m[33m [m[4mA[m[29;72H2[1;6H[4mAB[m[29;72H3[1;7H[4mBC[m[29;72H4[1;8H[4mCD[m[29;72H5[1;9H[4mDE[m[29;72H6[1;10H[4mEF[m[29;72H7[1;11H[4mFG[m[29;72H8[1;12H[29;1H[K[1;11H[29;70H1,7[11CAll[1;11H[29;70H[K[29;1H:wq[?1002l"file1" 1L, 8C written
+[?1l>[2J[?47l8jmeji011@hammer.cs.ucr.edu:$ cat file1
+ABCDEFG
+jmeji011@hammer.cs.ucr.edu:$ cat < file1
+ABCDEFG
+jmeji011@hammer.cs.ucr.edu:$ #that showed < ir nput redir
+jmeji011@hammer.cs.ucr.edu:$ showing       cat file2
+cat: file2: No such file or directory
+jmeji011@hammer.cs.ucr.edu:$ #that shows that it does err   check for proper files
+jmeji011@hammer.cs.ucr.edu:$ #more error checks
+jmeji011@hammer.cs.ucr.edu:$ cat <<<
+Invalid number of arguments. 
+jmeji011@hammer.cs.ucr.edu:$ cat <
+Invalid number of arguments. 
+jmeji011@hammer.cs.ucr.edu:$ cat <<
+Invalid number of arguments. 
+jmeji011@hammer.cs.ucr.edu:$ cat   #showing <<< now
+jmeji011@hammer.cs.ucr.edu:$ cat <<< hello
+hello
+jmeji011@hammer.cs.ucr.edu:$ #h showing example from assn that involves > < and piping
+jmeji011@hammer.cs.ucr.edu:$ cat file1 | tr A-z Z a-z | tee file2 | tr a-z A-Z > file3
+jmeji011@hammer.cs.ucr.edu:$ #this shoul          now to display the files
+jmeji011@hammer.cs.ucr.edu:$ cat file1
+ABCDEFG
+jmeji011@hammer.cs.ucr.edu:$ cat file2
+abcdefg
+jmeji011@hammer.cs.ucr.edu:$ cat file3
+ABCDEFG
+jmeji011@hammer.cs.ucr.edu:$ #just how they are supposed to be
+jmeji011@hammer.cs.ucr.edu:$ # with file descriptros
+jmeji011@hammer.cs.ucr.edu:$ 0>file1
+jmeji011@hammer.cs.ucr.edu:$ cat file1
+jmeji011@hammer.cs.ucr.edu:$ ls 1 > file1
+ls: cannot access 1: No such file or directory
+jmeji011@hammer.cs.ucr.edu:$ #multiple files with redirection
+jmeji011@hammer.cs.ucr.edu:$ ls > file  1 >file2 >file3
+jmeji011@hammer.cs.ucr.edu:$ ls
+bin  file1  file2  file3  LICENSE  Makefile  README.md	src  tests
+jmeji011@hammer.cs.ucr.edu:$ cat file3
+bin
+file1
+file2
+file3
+LICENSE
+Makefile
+README.md
+src
+tests
+jmeji011@hammer.cs.ucr.edu:$ cat file2
+jmeji011@hammer.cs.ucr.edu:$ cat file1
+jmeji011@hammer.cs.ucr.edu:$ #how it should be
+jmeji011@hammer.cs.ucr.edu:$ cat     #now multiple files with dec scriptors
+jmeji011@hammer.cs.ucr.edu:$ ls > file1 > f file2 1 > file3 0
+ls: cannot access 1: No such file or directory
+ls: cannot access 0: No such file or directory
+jmeji011@hammer.cs.ucr.edu:$ #output redirection n
+jmeji011@hammer.cs.ucr.edu:$ ; ls >> cat file2
+jmeji011@hammer.cs.ucr.edu:$ ^[[A^[[B        ls >> cat file3
+jmeji011@hammer.cs.ucr.edu:$ touch file4
+jmeji011@hammer.cs.ucr.edu:$ cim   vim
+[?1000h7[?47h[?1h=[1;29r[m[H[2J[>c[1;1H[4m[33m  1 [m[4m                                                                                   [m[2;1H[1m[34m~                                                                                      [3;1H~                                                                                      [4;1H~                                                                                      [5;1H~                                                                                      [6;1H~                                                                                      [7;1H~                                                                                      [8;1H~                                                                                      [9;1H~                                                                                      [10;1H~                                                                                      [11;1H~                                                                                      [12;1H~                                                                                      [13;1H~                                                                                      [14;1H~                                                                                      [15;1H~                                                                                      [16;1H~                                                                                      [17;1H~                                                                                      [18;1H~                                                                                      [19;1H~                                                                                      [20;1H~                                                                                      [21;1H~                                                                                      [22;1H~                                                                                      [23;1H~                                                                                      [24;1H~                                                                                      [25;1H~                                                                                      [26;1H~                                                                                      [27;1H~                                                                                      [28;1H~                                                                                      [m[29;70H0,0-1[9CAll[9;36HVIM - Vi IMproved[11;37Hversion 7.2.411[12;32Hby Bram Moolenaar et al.[13;28HModified by [34m<bugzilla@redhat.com>[m[14;23HVim is open source and freely distributable[16;30HHelp poor children in Uganda![17;21Htype  :help iccf[34m<Enter>[m       for information [19;21Htype  :q[34m<Enter>[m               to exit         [20;21Htype  :help[34m<Enter>[m  or  [34m<F1>[m  for on-line help[21;21Htype  :help version7[34m<Enter>[m   for version info[1;5H[?1000l[?1002hP+q436f\P+q6b75\P+q6b64\P+q6b72\P+q6b6c\P+q2332\P+q2334\P+q2569\P+q2a37\P+q6b31\[29;1H[1m-- INSERT --[m[29;70H[K[29;70H0,1[11CAll[1;5H[4m[33m [m[4mm[m[9;36H[1m[34m                 [11;37H               [12;32H                        [13;28H                                  [14;23H                                           [16;30H                             [17;21H                                              [19;21H                                              [20;21H                                              [21;21H                                              [m[29;70H1,2[1;6H[4mmd[m[29;72H3[1;7H[4mdas[m[29;72H5[1;9H[4msj[m[29;72H6[1;10H[4mjk[m[29;72H7[1;11H[4mkf[m[29;72H8[1;12H[4mfm[m[29;72H9[1;13H[4mma[m[29;72H10[1;14H[4mak[m[29;73H1[1;15H[4mkf[m[29;73H2[1;16H[4mfk[m[29;73H3[1;17H[4mka[m[29;73H4[1;18H[4mas[m[29;73H5[1;19H[4msd[m[29;73H6[1;20H[4mdm[m[29;73H7[1;21H[4mmk[m[29;73H8[1;22H[4mkf[m[29;73H9[1;23H[29;1H[K[1;22H[29;70H1,18[10CAll[1;22H[29;70H[K[29;1H:wq[1m[37m[41mE32: No file name[m[52C1,18[10CAll[1;22H[29;1H[K[29;1H:wq[1m[37m[41mE32: No file name[m[52C1,18[10CAll[1;22H[1;5H[7mmdasjkfmakfkasdmk[mf[1;23H[K[29;1H[1m--[m[1m[37m[41m2[m[1m VISUAL[m[1m[37m[41mi[m[1m --[m[1m[37m[41m [m[29;13H[K[29;70H1,18[10CAll[1;22H[1;5H[4mmdasjkfmakfkasdmkf                                                                 [m[29;1H[K[29;70H1,18[10CAll[1;22H[29;70H[K[29;1H:wq[1m[37m[41mE32: No file name[m[52C1,18[10CAll[1;22H[29;1H[K[29;1H:Q![29;3H[K[29;3H![1m[37m[41mE492: Not an editor command: Q![m[38C1,18[10CAll[1;22H[29;1H[K[29;1H:[69C1,18[10CAll[1;22H[29;1H[K[29;1H:q![?1002l[29;1H[K[29;1H[?1l>[2J[?47l8jmeji011@hammer.cs.ucr.edu:$ vim file4
+[?1000h7[?47h[?1h=[1;29r[m[H[2J[29;1H"file4" 0L, 0C[>c[1;1H[4m[33m  1 [m[4m                                                                                   [m[2;1H[1m[34m~                                                                                      [3;1H~                                                                                      [4;1H~                                                                                      [5;1H~                                                                                      [6;1H~                                                                                      [7;1H~                                                                                      [8;1H~                                                                                      [9;1H~                                                                                      [10;1H~                                                                                      [11;1H~                                                                                      [12;1H~                                                                                      [13;1H~                                                                                      [14;1H~                                                                                      [15;1H~                                                                                      [16;1H~                                                                                      [17;1H~                                                                                      [18;1H~                                                                                      [19;1H~                                                                                      [20;1H~                                                                                      [21;1H~                                                                                      [22;1H~                                                                                      [23;1H~                                                                                      [24;1H~                                                                                      [25;1H~                                                                                      [26;1H~                                                                                      [27;1H~                                                                                      [28;1H~                                                                                      [m[29;70H0,0-1[9CAll[1;5H[?1000l[?1002hP+q436f\P+q6b75\P+q6b64\P+q6b72\P+q6b6c\P+q2332\P+q2334\P+q2569\P+q2a37\P+q6b31\[29;1H[1m-- INSERT --[m[29;13H[K[29;70H0,1[11CAll[1;5H[4m[33m [m[4ma[m[29;70H1,2[1;6H[4mah[m[29;72H3[1;7H[4mha[m[29;72H4[1;8H[4mab[m[29;72H5[1;9H[4mbf[m[29;72H6[1;10H[4mfhd[m[29;72H8[1;12H[4mdb[m[29;72H9[1;13H[4mbf[m[29;72H10[1;14H[4mfadbsh[m[29;73H5[1;19H[4mhf[m[29;73H6[1;20H[4mfn[m[29;73H7[1;21H[29;1H[K[1;20H[29;70H1,16[10CAll[1;20H[29;70H[K[29;1H:wq[?1002l"file4" 1L, 17C written
+[?1l>[2J[?47l8jmeji011@hammer.cs.ucr.edu:$ ls >> cat file4
+jmeji011@hammer.cs.ucr.edu:$ cat file4
+ahabfhdbfadbshfn
+jmeji011@hammer.cs.ucr.edu:$ exit
+End of program.
+~/cs100/rshell
+jmeji011@hammer $ exit
+exit
+
+Script done on Mon 18 May 2015 04:04:58 AM PDT
