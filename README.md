@@ -49,5 +49,14 @@ Rshell now handles input redirection `<`, output redirection `>` and piping `|`.
 This program is setup to work without the connectors part of rshell from before.
 That part of the code is commented out and will continue to work when uncommented.
 
+#How to run HW2
+```
+$git clone https://github.com/jmeji011/rshell.git
+$cd rshell
+$git checkout hw2
+$make
+$bin/rshell
+```
+
 #Test Cases
 These are located in the tests folder.
