@@ -6,8 +6,41 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <string.h>
+
 
 using namespace std;
+
+bool r = false;
+const int rpipe = 0;
+const int wpipe = 1;
+
+//struct for redirection
+struct redirect
+{
+    char *file;
+    int io;
+    int filedes;
+    
+    //constructor
+    redirect(const char*file, const int io, const int filedes)
+    {
+        this->file = new char[strlen(file) + 1];
+        strcpy(this->file, file);
+        this->io = io;
+        this->filedes = filedes;
+    }
+    
+    //deconstructor
+    ~redirect()
+    {
+        delete[] this->file;
+    }
+};
+
+
 
 //this function gets the user's login and host name(extra credit prompt)
 void prompt()
@@ -40,6 +73,104 @@ bool exitshell(char** close)
 	}
 	else return false;
 }
+
+void readi(char strg[])
+{
+    if(!fgets(strg,500,stdin)) return;
+    
+    int length = strlen(strg);
+    
+    if(strg[length-1] == '\n') strg[length-1] = '\0';
+}
+
+void lengtha(char cntrl[], int &length, int &a)
+{
+	length = length + 2;
+    
+	cntrl[length] = '\0';
+    
+	for (int b = length-1; b > a + 2; --b)
+    {
+		cntrl[b] = cntrl[b - 2];
+    }
+	cntrl[a + 2] = ' ';
+    
+	cntrl[a + 1] = cntrl[a];
+    
+	cntrl[a] = ' ';
+    
+	a = a + 2;
+}
+
+void lengthb(char cntrl[], int &length, int &a)
+{
+	length = length + 2;
+    
+	cntrl[length] = '\0';
+    
+	for (int b = length-1; b > a + 3; --b)
+    {
+		cntrl[b] = cntrl[b - 2];
+    }
+	cntrl[a + 3] = ' ';
+    
+	cntrl[a + 2] = cntrl[a + 1];
+    
+	cntrl[a + 1] = cntrl[a];
+    
+	cntrl[a] = ' ';
+    
+	a = a + 3;
+}
+
+void lengthc(char cntrl[], int &length, int &a)
+{
+	length = length + 2;
+    
+	cntrl[length] = '\0';
+    
+	for (int b = length-1; b > a + 4; --b)
+    {
+		cntrl[b] = cntrl[b - 2];
+    }
+	cntrl[a + 4] = ' ';
+    
+	cntrl[a + 3] = cntrl[a + 2];
+    
+	cntrl[a + 2] = cntrl[a + 1];
+    
+	cntrl[a + 1] = cntrl[a];
+    
+	cntrl[a] = ' ';
+    
+	a = a + 4;
+}
+
+void lengthd(char cntrl[], int &length, int &a)
+{
+	length = length + 2;
+    
+	cntrl[length] = '\0';
+    
+	for (int b = length-1; b > a + 5; --b)
+    {
+		cntrl[b] = cntrl[b - 2];
+    }
+	cntrl[a + 5] = ' ';
+    
+    cntrl[a + 4] = cntrl[a + 3];
+    
+	cntrl[a + 3] = cntrl[a + 2];
+    
+	cntrl[a + 2] = cntrl[a + 1];
+    
+	cntrl[a + 1] = cntrl[a];
+    
+	cntrl[a] = ' ';
+    
+	a = a + 5;
+}
+
 
 //this function parses the command string
 void parse(string& str, char**& dilem, char*& token)
