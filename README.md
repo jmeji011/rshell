@@ -41,4 +41,13 @@ The directories and filenames are not aligned during use of standard ls in compa
 to bashs ls. 
 
 
+#HW 2: Adding redirection to Rshell
+This program is an updated version of my previous rshell.
+Rshell now handles input redirection `<`, output redirection `>` and piping `|`.
 
+#HW 2 Bugs
+This program is setup to work without the connectors part of rshell from before.
+That part of the code is commented out and will continue to work when uncommented.
+
+#Test Cases
+These are located in the tests folder.

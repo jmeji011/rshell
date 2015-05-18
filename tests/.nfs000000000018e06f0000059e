@@ -1,0 +1,349 @@
+Script started on Mon 18 May 2015 03:43:43 AM PDT
+~
+jmeji011@hammer $ cd cs100/rshell
+~/cs100/rshell
+jmeji011@hammer $ make
+mkdir -p ./bin
+g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
+g++ -ansi -pedantic -Wall -Werror ./src/ls.cpp -o ./bin/ls
+~/cs100/rshell
+jmeji011@hammer $ ./rshell
+bash: ./rshell: No such file or directory
+~/cs100/rshell
+jmeji011@hammer $ rshell
+bash: rshell: command not found
+~/cs100/rshell
+jmeji011@hammer $ ls
+[0m[01;34mbin[0m/  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtests[0m/
+[m~/cs100/rshell
+jmeji011@hammer $ bin/rshell
+jmeji011@hammer.cs.ucr.edu:$ exit
+End of program.
+~/cs100/rshell
+jmeji011@hammer $ ls
+[0m[01;34mbin[0m/  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtests[0m/
+[m~/cs100/rshell
+jmeji011@hammer $ cd et[K[Ktests
+~/cs100/rshell/tests
+jmeji011@hammer $ ls
+exec.script  ls.script  piping.script
+~/cs100/rshell/tests
+jmeji011@hammer $ rm pim[Kping.script
+/bin/rm: remove regular empty file `piping.script'? y
+~/cs100/rshell/tests
+jmeji011@hammer $ script piping.script
+Script started, file is piping.script
+~
+jmeji011@hammer $ cd cs100/rshell
+~/cs100/rshell
+jmeji011@hammer $ make
+mkdir -p ./bin
+g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
+g++ -ansi -pedantic -Wall -Werror ./src/ls.cpp -o ./bin/ls
+~/cs100/rshell
+jmeji011@hammer $ bin/rshell
+jmeji011@hammer.cs.ucr.edu:$ ls
+bin  LICENSE  Makefile	README.md  src	tests
+jmeji011@hammer.cs.ucr.edu:$ touch test    file1
+jmeji011@hammer.cs.ucr.edu:$ vim file1
+[?1000h7[?47h[?1h=[1;29r[m[H[2J[29;1H"file1" 0L, 0C[>c[1;1H[4m[33m  1 [m[4m                                                                                   [m[2;1H[1m[34m~                                                                                      [3;1H~                                                                                      [4;1H~                                                                                      [5;1H~                                                                                      [6;1H~                                                                                      [7;1H~                                                                                      [8;1H~                                                                                      [9;1H~                                                                                      [10;1H~                                                                                      [11;1H~                                                                                      [12;1H~                                                                                      [13;1H~                                                                                      [14;1H~                                                                                      [15;1H~                                                                                      [16;1H~                                                                                      [17;1H~                                                                                      [18;1H~                                                                                      [19;1H~                                                                                      [20;1H~                                                                                      [21;1H~                                                                                      [22;1H~                                                                                      [23;1H~                                                                                      [24;1H~                                                                                      [25;1H~                                                                                      [26;1H~                                                                                      [27;1H~                                                                                      [28;1H~                                                                                      [m[29;70H0,0-1[9CAll[1;5H[?1000l[?1002hP+q436f\P+q6b75\P+q6b64\P+q6b72\P+q6b6c\P+q2332\P+q2334\P+q2569\P+q2a37\P+q6b31\[29;1H[1m-- INSERT --[m[29;13H[K[29;70H0,1[11CAll[1;5H[4m[33m [m[4mB[m[29;70H1,2[1;6H[4m[33m [m[4m [m[29;72H1[1;5H[4m[33m [m[4mA[m[29;72H2[1;6H[4mAB[m[29;72H3[1;7H[4mBC[m[29;72H4[1;8H[4mCD[m[29;72H5[1;9H[4mDE[m[29;72H6[1;10H[4mEF[m[29;72H7[1;11H[4mFG[m[29;72H8[1;12H[29;1H[K[1;11H[29;70H1,7[11CAll[1;11H[29;70H[K[29;1H:wq[?1002l"file1" 1L, 8C written
+[?1l>[2J[?47l8jmeji011@hammer.cs.ucr.edu:$ cat file1
+ABCDEFG
+jmeji011@hammer.cs.ucr.edu:$ cat < file1
+ABCDEFG
+jmeji011@hammer.cs.ucr.edu:$ #that showed < ir nput redir
+jmeji011@hammer.cs.ucr.edu:$ showing       cat file2
+cat: file2: No such file or directory
+jmeji011@hammer.cs.ucr.edu:$ #that shows that it does err   check for proper files
+jmeji011@hammer.cs.ucr.edu:$ #more error checks
+jmeji011@hammer.cs.ucr.edu:$ cat <<<
+Invalid number of arguments. 
+jmeji011@hammer.cs.ucr.edu:$ cat <
+Invalid number of arguments. 
+jmeji011@hammer.cs.ucr.edu:$ cat <<
+Invalid number of arguments. 
+jmeji011@hammer.cs.ucr.edu:$ cat   #showing <<< now
+jmeji011@hammer.cs.ucr.edu:$ cat <<< hello
+hello
+jmeji011@hammer.cs.ucr.edu:$ #h showing example from assn that involves > < and piping
+jmeji011@hammer.cs.ucr.edu:$ cat file1 | tr A-z Z a-z | tee file2 | tr a-z A-Z > file3
+jmeji011@hammer.cs.ucr.edu:$ #this shoul          now to display the files
+jmeji011@hammer.cs.ucr.edu:$ cat file1
+ABCDEFG
+jmeji011@hammer.cs.ucr.edu:$ cat file2
+abcdefg
+jmeji011@hammer.cs.ucr.edu:$ cat file3
+ABCDEFG
+jmeji011@hammer.cs.ucr.edu:$ #just how they are supposed to be
+jmeji011@hammer.cs.ucr.edu:$ # with file descriptros
+jmeji011@hammer.cs.ucr.edu:$ 0>file1
+jmeji011@hammer.cs.ucr.edu:$ cat file1
+jmeji011@hammer.cs.ucr.edu:$ ls 1 > file1
+ls: cannot access 1: No such file or directory
+jmeji011@hammer.cs.ucr.edu:$ #multiple files with redirection
+jmeji011@hammer.cs.ucr.edu:$ ls > file  1 >file2 >file3
+jmeji011@hammer.cs.ucr.edu:$ ls
+bin  file1  file2  file3  LICENSE  Makefile  README.md	src  tests
+jmeji011@hammer.cs.ucr.edu:$ cat file3
+bin
+file1
+file2
+file3
+LICENSE
+Makefile
+README.md
+src
+tests
+jmeji011@hammer.cs.ucr.edu:$ cat file2
+jmeji011@hammer.cs.ucr.edu:$ cat file1
+jmeji011@hammer.cs.ucr.edu:$ #how it should be
+jmeji011@hammer.cs.ucr.edu:$ cat     #now multiple files with dec scriptors
+jmeji011@hammer.cs.ucr.edu:$ ls > file1 > f file2 1 > file3 0
+ls: cannot access 1: No such file or directory
+ls: cannot access 0: No such file or directory
+jmeji011@hammer.cs.ucr.edu:$ #output redirection n
+jmeji011@hammer.cs.ucr.edu:$ ; ls >> cat file2
+jmeji011@hammer.cs.ucr.edu:$ ^[[A^[[B        ls >> cat file3
+jmeji011@hammer.cs.ucr.edu:$ touch file4
+jmeji011@hammer.cs.ucr.edu:$ cim   vim
+[?1000h7[?47h[?1h=[1;29r[m[H[2J[>c[1;1H[4m[33m  1 [m[4m                                                                                   [m[2;1H[1m[34m~                                                                                      [3;1H~                                                                                      [4;1H~                                                                                      [5;1H~                                                                                      [6;1H~                                                                                      [7;1H~                                                                                      [8;1H~                                                                                      [9;1H~                                                                                      [10;1H~                                                                                      [11;1H~                                                                                      [12;1H~                                                                                      [13;1H~                                                                                      [14;1H~                                                                                      [15;1H~                                                                                      [16;1H~                                                                                      [17;1H~                                                                                      [18;1H~                                                                                      [19;1H~                                                                                      [20;1H~                                                                                      [21;1H~                                                                                      [22;1H~                                                                                      [23;1H~                                                                                      [24;1H~                                                                                      [25;1H~                                                                                      [26;1H~                                                                                      [27;1H~                                                                                      [28;1H~                                                                                      [m[29;70H0,0-1[9CAll[9;36HVIM - Vi IMproved[11;37Hversion 7.2.411[12;32Hby Bram Moolenaar et al.[13;28HModified by [34m<bugzilla@redhat.com>[m[14;23HVim is open source and freely distributable[16;30HHelp poor children in Uganda![17;21Htype  :help iccf[34m<Enter>[m       for information [19;21Htype  :q[34m<Enter>[m               to exit         [20;21Htype  :help[34m<Enter>[m  or  [34m<F1>[m  for on-line help[21;21Htype  :help version7[34m<Enter>[m   for version info[1;5H[?1000l[?1002hP+q436f\P+q6b75\P+q6b64\P+q6b72\P+q6b6c\P+q2332\P+q2334\P+q2569\P+q2a37\P+q6b31\[29;1H[1m-- INSERT --[m[29;70H[K[29;70H0,1[11CAll[1;5H[4m[33m [m[4mm[m[9;36H[1m[34m                 [11;37H               [12;32H                        [13;28H                                  [14;23H                                           [16;30H                             [17;21H                                              [19;21H                                              [20;21H                                              [21;21H                                              [m[29;70H1,2[1;6H[4mmd[m[29;72H3[1;7H[4mdas[m[29;72H5[1;9H[4msj[m[29;72H6[1;10H[4mjk[m[29;72H7[1;11H[4mkf[m[29;72H8[1;12H[4mfm[m[29;72H9[1;13H[4mma[m[29;72H10[1;14H[4mak[m[29;73H1[1;15H[4mkf[m[29;73H2[1;16H[4mfk[m[29;73H3[1;17H[4mka[m[29;73H4[1;18H[4mas[m[29;73H5[1;19H[4msd[m[29;73H6[1;20H[4mdm[m[29;73H7[1;21H[4mmk[m[29;73H8[1;22H[4mkf[m[29;73H9[1;23H[29;1H[K[1;22H[29;70H1,18[10CAll[1;22H[29;70H[K[29;1H:wq[1m[37m[41mE32: No file name[m[52C1,18[10CAll[1;22H[29;1H[K[29;1H:wq[1m[37m[41mE32: No file name[m[52C1,18[10CAll[1;22H[1;5H[7mmdasjkfmakfkasdmk[mf[1;23H[K[29;1H[1m--[m[1m[37m[41m2[m[1m VISUAL[m[1m[37m[41mi[m[1m --[m[1m[37m[41m [m[29;13H[K[29;70H1,18[10CAll[1;22H[1;5H[4mmdasjkfmakfkasdmkf                                                                 [m[29;1H[K[29;70H1,18[10CAll[1;22H[29;70H[K[29;1H:wq[1m[37m[41mE32: No file name[m[52C1,18[10CAll[1;22H[29;1H[K[29;1H:Q![29;3H[K[29;3H![1m[37m[41mE492: Not an editor command: Q![m[38C1,18[10CAll[1;22H[29;1H[K[29;1H:[69C1,18[10CAll[1;22H[29;1H[K[29;1H:q![?1002l[29;1H[K[29;1H[?1l>[2J[?47l8jmeji011@hammer.cs.ucr.edu:$ vim file4
+[?1000h7[?47h[?1h=[1;29r[m[H[2J[29;1H"file4" 0L, 0C[>c[1;1H[4m[33m  1 [m[4m                                                                                   [m[2;1H[1m[34m~                                                                                      [3;1H~                                                                                      [4;1H~                                                                                      [5;1H~                                                                                      [6;1H~                                                                                      [7;1H~                                                                                      [8;1H~                                                                                      [9;1H~                                                                                      [10;1H~                                                                                      [11;1H~                                                                                      [12;1H~                                                                                      [13;1H~                                                                                      [14;1H~                                                                                      [15;1H~                                                                                      [16;1H~                                                                                      [17;1H~                                                                                      [18;1H~                                                                                      [19;1H~                                                                                      [20;1H~                                                                                      [21;1H~                                                                                      [22;1H~                                                                                      [23;1H~                                                                                      [24;1H~                                                                                      [25;1H~                                                                                      [26;1H~                                                                                      [27;1H~                                                                                      [28;1H~                                                                                      [m[29;70H0,0-1[9CAll[1;5H[?1000l[?1002hP+q436f\P+q6b75\P+q6b64\P+q6b72\P+q6b6c\P+q2332\P+q2334\P+q2569\P+q2a37\P+q6b31\[29;1H[1m-- INSERT --[m[29;13H[K[29;70H0,1[11CAll[1;5H[4m[33m [m[4ma[m[29;70H1,2[1;6H[4mah[m[29;72H3[1;7H[4mha[m[29;72H4[1;8H[4mab[m[29;72H5[1;9H[4mbf[m[29;72H6[1;10H[4mfhd[m[29;72H8[1;12H[4mdb[m[29;72H9[1;13H[4mbf[m[29;72H10[1;14H[4mfadbsh[m[29;73H5[1;19H[4mhf[m[29;73H6[1;20H[4mfn[m[29;73H7[1;21H[29;1H[K[1;20H[29;70H1,16[10CAll[1;20H[29;70H[K[29;1H:wq[?1002l"file4" 1L, 17C written
+[?1l>[2J[?47l8jmeji011@hammer.cs.ucr.edu:$ ls >> cat file4
+jmeji011@hammer.cs.ucr.edu:$ cat file4
+ahabfhdbfadbshfn
+jmeji011@hammer.cs.ucr.edu:$ exit
+End of program.
+~/cs100/rshell
+jmeji011@hammer $ exit
+exit
+Script done, file is piping.script
+~/cs100/rshell/tests
+jmeji011@hammer $ git c[Kadd -A
+~/cs100/rshell/tests
+jmeji011@hammer $ git commit -m "updated script"
+[master 239189f] updated script
+ Committer: Juan Mejia <jmeji011@hammer.cs.ucr.edu>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+If the identity used for this commit is wrong, you can fix it with:
+
+    git commit --amend --author='Your Name <you@example.com>'
+
+ 1 files changed, 86 insertions(+), 0 deletions(-)
+ create mode 100644 tests/.nfs000000000018e06f0000059e
+ create mode 100644 tests/piping.script
+~/cs100/rshell/tests
+jmeji011@hammer $ ls
+exec.script  ls.script  piping.script
+~/cs100/rshell/tests
+jmeji011@hammer $ cd ..
+~/cs100/rshell
+jmeji011@hammer $ ls
+[0m[01;34mbin[0m/  cat  file1  file2  file3  file4  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtests[0m/
+[m~/cs100/rshell
+jmeji011@hammer $ rm file1 ile[K[K[K[K file2 file3 file4
+/bin/rm: remove regular empty file `file1'? y
+/bin/rm: remove regular empty file `file2'? y
+/bin/rm: remove regular empty file `file3'? y
+/bin/rm: remove regular file `file4'? y
+~/cs100/rshell
+jmeji011@hammer $ y[Kls
+[0m[01;34mbin[0m/  cat  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtests[0m/
+[m~/cs100/rshell
+jmeji011@hammer $ sc src
+bash: sc: command not found
+~/cs100/rshell
+jmeji011@hammer $ cd src
+~/cs100/rshell/src
+jmeji011@hammer $ ls
+cp.cpp  ls.cpp  main.cpp
+~/cs100/rshell/src
+jmeji011@hammer $ ls -a
+[0m[01;34m.[0m/  [01;34m..[0m/  cp.cpp  ls.cpp  main.cpp
+[m~/cs100/rshell/src
+jmeji011@hammer $ cd ..
+~/cs100/rshell
+jmeji011@hammer $ ls
+[0m[01;34mbin[0m/  cat  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtests[0m/
+[m~/cs100/rshell
+jmeji011@hammer $ git tag hw2
+~/cs100/rshell
+jmeji011@hammer $ git push origin
+error: The requested URL returned error: 403 Forbidden while accessing https://github.com/jmeji011/rshell.git/info/refs
+
+fatal: HTTP request failed
+~/cs100/rshell
+jmeji011@hammer $ git push origin master
+error: The requested URL returned error: 403 Forbidden while accessing https://github.com/jmeji011/rshell.git/info/refs
+
+fatal: HTTP request failed
+~/cs100/rshell
+jmeji011@hammer $ cs100
+[0;91m
+===============================================================================
+|                                                                             |
+| You have enabled settings specific for cs100.  Everything you do is being   |
+| recorded to measure your progress in the class.                             |
+|                                                                             |
+| Important commands for the class:                                           |
+|   * calcgrade.sh          displays a detailed breakdown of your grade       |
+|   * checksyscalls.sh      is your cpp file doing proper error checking?     |
+|   * typespeed             practice typing unix commands                     |
+|                                                                             |
+| Important commands for general C++ programming:                             |
+|   * make                  don't call g++ manually; let make do the work!    |
+|   * gdb                   the GNU debugger                                  |
+|   * valgrind              get rid of your memory leaks                      |
+|   * cppcheck              static analysis tool                              |
+|   * man                   find help about any syscall / terminal command    |
+|                                                                             |
+===============================================================================
+[0m
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~[0;95m [0;36m$[0m git push origin
+fatal: Not a git repository (or any parent up to mount point /home/csmajs)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~[0;95m [0;36m$[0m ls
+cdcs10	cs13   cs14w	Documents  Exercises2  Public	  test
+cs100	cs14   cs61	Downloads  Music       rshell	  testpg
+cs120b	cs141  Desktop	Exercises  Pictures    Templates  Videos
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~[0;95m [0;36m$[0m cd cs100
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100[0;95m [0;36m$[0m ls
+firstrepo  labs  rshell  ucr-cs100
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100[0;95m [0;36m$[0m cd rshell
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m ls
+bin  cat  LICENSE  Makefile  README.md	src  tests
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m git push[K[K[K[K[K[K[K[Krm ca
+rm: cannot remove `ca': No such file or directory
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m rm cat
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m git push origin
+warning: push.default is unset; its implicit value is changing in
+Git 2.0 from 'matching' to 'simple'. To squelch this message
+and maintain the current behavior after the default changes, use:
+
+  git config --global push.default matching
+
+To squelch this message and adopt the new behavior now, use:
+
+  git config --global push.default simple
+
+See 'git help config' and search for 'push.default' for further information.
+(the 'simple' mode was introduced in Git 1.7.11. Use the similar mode
+'current' instead of 'simple' if you sometimes use older versions of Git)
+
+Username for 'https://github.com': jmeji011@ 
+Password for 'https://jmeji011@github.com': 
+To https://github.com/jmeji011/rshell.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'https://github.com/jmeji011/rshell.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m git pull origin maste[K[K[K[K[K
+remote: Counting objects: 7, done.[K
+remote: Total 7 (delta 0), reused 0 (delta 0), pack-reused 7[K
+Unpacking objects:  14% (1/7)   Unpacking objects:  28% (2/7)   Unpacking objects:  42% (3/7)   Unpacking objects:  57% (4/7)   Unpacking objects:  71% (5/7)   Unpacking objects:  85% (6/7)   Unpacking objects: 100% (7/7)   Unpacking objects: 100% (7/7), done.
+From https://github.com/jmeji011/rshell
+   d9854c8..89f7153  master     -> origin/master
+[?1000h7[?47h[?1h=[1;29r[m[H[2J[29;1H".git/MERGE_MSG" 7L, 287C[>c[1;1H[4m[33m  1 [m[4mMerge branch [m[4m[31m'master'[m[4m of https://github.com/jmeji011/rshell                        [m[2;1H[33m  2 
+  3 [m[34m# Please enter a commit message to explain why this merge is necessary,[m
+[33m  4 [m[34m# especially if it merges an updated upstream into a topic branch.[m
+[33m  5 [m[34m#[m
+[33m  6 [m[34m# Lines starting with '#' will be ignored, and an empty message aborts[m
+[33m  7 [m[34m# the commit.[m
+[1m[34m~                                                                                      [9;1H~                                                                                      [10;1H~                                                                                      [11;1H~                                                                                      [12;1H~                                                                                      [13;1H~                                                                                      [14;1H~                                                                                      [15;1H~                                                                                      [16;1H~                                                                                      [17;1H~                                                                                      [18;1H~                                                                                      [19;1H~                                                                                      [20;1H~                                                                                      [21;1H~                                                                                      [22;1H~                                                                                      [23;1H~                                                                                      [24;1H~                                                                                      [25;1H~                                                                                      [26;1H~                                                                                      [27;1H~                                                                                      [28;1H~                                                                                      [m[29;70H1,1[11CAll[1;5H[?1000l[?1002hP+q436f\P+q6b75\P+q6b64\P+q6b72\P+q6b6c\P+q2332\P+q2334\P+q2569\P+q2a37\P+q6b31\[33m  1 [mMerge branch [31m'master'[m of https://github.com/jmeji011/rshell[1;64H[K[2;1H[4m[33m  2 [m[4m                                                                                   [m[29;70H2,0-1[2;5H[29;1H[K[29;1H:wq[?1002l".git/MERGE_MSG" 7L, 287C written
+[?1l>[2J[?47l8Merge made by the 'recursive' strategy.
+ Makefile   |  9 [32m+++++++[m
+ src/mv.cpp | 90 [32m+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[m
+ src/rm.cpp | 86 [32m+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[m
+ 3 files changed, 185 insertions(+)
+ create mode 100644 src/mv.cpp
+ create mode 100644 src/rm.cpp
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m git push origin
+warning: push.default is unset; its implicit value is changing in
+Git 2.0 from 'matching' to 'simple'. To squelch this message
+and maintain the current behavior after the default changes, use:
+
+  git config --global push.default matching
+
+To squelch this message and adopt the new behavior now, use:
+
+  git config --global push.default simple
+
+See 'git help config' and search for 'push.default' for further information.
+(the 'simple' mode was introduced in Git 1.7.11. Use the similar mode
+'current' instead of 'simple' if you sometimes use older versions of Git)
+
+Username for 'https://github.com': jmeji011
+Password for 'https://jmeji011@github.com': 
+Counting objects: 23, done.
+Delta compression using up to 48 threads.
+Compressing objects:   6% (1/16)   Compressing objects:  12% (2/16)   Compressing objects:  18% (3/16)   Compressing objects:  25% (4/16)   Compressing objects:  31% (5/16)   Compressing objects:  37% (6/16)   Compressing objects:  43% (7/16)   Compressing objects:  50% (8/16)   Compressing objects:  56% (9/16)   Compressing objects:  62% (10/16)   Compressing objects:  68% (11/16)   Compressing objects:  75% (12/16)   Compressing objects:  81% (13/16)   Compressing objects:  87% (14/16)   Compressing objects:  93% (15/16)   Compressing objects: 100% (16/16)   Compressing objects: 100% (16/16), done.
+Writing objects:   5% (1/17)   Writing objects:  11% (2/17)   Writing objects:  17% (3/17)   Writing objects:  23% (4/17)   Writing objects:  29% (5/17)   Writing objects:  35% (6/17)   Writing objects:  41% (7/17)   Writing objects:  47% (8/17)   Writing objects:  52% (9/17)   Writing objects:  58% (10/17)   Writing objects:  64% (11/17)   Writing objects:  70% (12/17)   Writing objects:  76% (13/17)   Writing objects:  82% (14/17)   Writing objects:  88% (15/17)   Writing objects:  94% (16/17)   Writing objects: 100% (17/17)   Writing objects: 100% (17/17), 12.73 KiB | 0 bytes/s, done.
+Total 17 (delta 7), reused 0 (delta 0)
+To https://github.com/jmeji011/rshell.git
+   89f7153..db02ff8  master -> master
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m ls
+bin  LICENSE  Makefile	README.md  src	tests
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m cd src
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m ls
+cp.cpp	ls.cpp	main.cpp  mv.cpp  rm.cpp
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m git main.cpp
+git: 'main.cpp' is not a git command. See 'git --help'.
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m ls
+cp.cpp	ls.cpp	main.cpp  mv.cpp  rm.cpp
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m cd main.cpp
+bash: cd: main.cpp: Not a directory
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m ls
+cp.cpp	ls.cpp	main.cpp  mv.cpp  rm.cpp
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m geany main.cpp &
+[1] 13476
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m gi[K[Kgit checkout
+M	README.md
+M	bin/rshell
+[1]+  Done                    geany main.cpp
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m git branch
+  exec[m
+  ls[m
+* [32mmaster[m
+  redirect[m
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m git push origin
+warning: push.default is unset; its implicit value is changing in
+Git 2.0 from 'matching' to 'simple'. To squelch this message
+and maintain the current behavior after the default changes, use:
+
+  git config --global push.default matching
+
+To squelch this message and adopt the new behavior now, use:
+
+  git config --global push.default simple
+
+See 'git help config' and search for 'push.default' for further information.
+(the 'simple' mode was introduced in Git 1.7.11. Use the similar mode
+'current' instead of 'simple' if you sometimes use older versions of Git)
+
+Username for 'https://github.com': jmeji011@ucr.     
+Password for 'https://jmeji011@github.com': 
+Everything up-to-date
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m c[Kls
+cp.cpp	ls.cpp	main.cpp  mv.cpp  rm.cpp
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m git merge[Ke redirect
+Already up-to-date.
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m git[K[K[Kls
+cp.cpp	ls.cpp	main.cpp  mv.cpp  rm.cpp
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m cd ..
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m ls
+bin  LICENSE  Makefile	README.md  src	tests
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m cd src
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m ls
+cp.cpp	ls.cpp	main.cpp  mv.cpp  rm.cpp
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/src[0;95m (master) [0;36m$[0m cd ..
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m cd et[K[Ktests
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell/tests[0;95m (master) [0;36m$[0m ls
+ex
