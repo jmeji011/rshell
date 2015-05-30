@@ -1,1003 +1,1113 @@
-#include <iostream>
+#include <stdlib.h>
 #include <stdio.h>
-#include <cstring>
+#include <unistd.h>
+#include <queue>
+#include <stack>
+#include <fstream>
+#include <signal.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <pwd.h>
+#include <iostream>
 #include <vector>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <string.h>
+#include <boost/tokenizer.hpp>
+#include <boost/algorithm/string.hpp>
 
+using namespace std; 
+using namespace boost;
+unsigned const nrd = 0, inprd = 1, strrd = 2, outrd = 3, apprd = 4, fdrd =5, fdard =6, pip = 7, npip = 7, rderr = 9, rpipe = 0, wpipe = 1;
+int const maxpipes = 40, nomatch = -2,  arrf = 2 ;
+string const nofile = "NO FILE";
+const char* hd = "HOME";
+const char* owd = "OLDPWD";
+const char* cwd = "PWD";
 
-using namespace std;
+stack<int> cp;
+int pid = 0, cpid = 0;
+siginfo_t *i;
 
-bool r = false;
-const int rpipe = 0;
-const int wpipe = 1;
-
-//struct for redirection
-struct redirect
-{
-    char *file;
-    int io;
-    int filedes;
+void home(string &s) {
     
-    //constructor
-    redirect(const char*file, const int io, const int filedes)
+    char* homedir;
+    
+    if ((homedir = secure_getenv(hd)) == NULL) 
     {
-        this->file = new char[strlen(file) + 1];
-        strcpy(this->file, file);
-        this->io = io;
-        this->filedes = filedes;
+        perror("secure_getenv():");
+    }
+    string h = homedir;
+    
+    s.replace(0, h.length(), "~");
+}
+
+void pcwd() {
+    
+    char cwd[BUFSIZ];
+    int s;
+    
+    if ((s = pathconf(".", _PC_PATH_MAX)) == -1) 
+    {
+        perror("pathconf():");
     }
     
-    //deconstructor
-    ~redirect()
+    if (getcwd(cwd, s) == NULL) 
     {
-        delete[] this->file;
+        perror("getcwd():");
     }
-};
-
-
-
-//this function gets the user's login and host name(extra credit prompt)
-void prompt()
-{
-	char* log = getlogin();
-	char host[500];
-	
-	if(!getlogin())
-	{
-		perror("getlogin()");
-	}
-	
-	if(gethostname(host, 500) == -1)
-	{
-		perror("gethostname");
-	}
-
-	cout << log << "@" << host << ":"<< "$ ";
+    
+    string cwd1 = cwd;
+    home(cwd1);
+    cout << cwd1 << "$ ";
 }
 
-//this function exits the program if "exit" is typed.
-bool exitshell(char** close)
-{
-	string abort = *close;
-	string e("exit");
-	
-	if(abort == e)
-	{
-		return true;
-	}
-	else return false;
-}
-
-void readi(char strg[])
-{
-    if(!fgets(strg,500,stdin)) return;
-    
-    int length = strlen(strg);
-    
-    if(strg[length-1] == '\n') strg[length-1] = '\0';
-}
-
-//these four functions depend on how many '<' or '>' there are
-void lengtha(char cntrl[], int &length, int &a)
-{
-	length = length + 2;
-    
-	cntrl[length] = '\0';
-    
-	for (int b = length-1; b > a + 2; --b)
+void prompt() {
+    struct passwd *user;
+    user = getpwuid(getuid());
+    if (user->pw_name == NULL) 
     {
-		cntrl[b] = cntrl[b - 2];
+        perror("getpquid()");
     }
-	cntrl[a + 2] = ' ';
+    char host[500];
+    host[500] = '\0';
     
-	cntrl[a + 1] = cntrl[a];
-    
-	cntrl[a] = ' ';
-    
-	a = a + 2;
-}
-
-void lengthb(char cntrl[], int &length, int &a)
-{
-	length = length + 2;
-    
-	cntrl[length] = '\0';
-    
-	for (int b = length-1; b > a + 3; --b)
+    if (gethostname(host, 499) == -1) 
     {
-		cntrl[b] = cntrl[b - 2];
+        perror("gethostname():");
     }
-	cntrl[a + 3] = ' ';
-    
-	cntrl[a + 2] = cntrl[a + 1];
-    
-	cntrl[a + 1] = cntrl[a];
-    
-	cntrl[a] = ' ';
-    
-	a = a + 3;
+    cout << user->pw_name << "@" << host << ":";
+    pcwd();
 }
 
-void lengthc(char cntrl[], int &length, int &a)
+void parseq(queue<string> &l, const string &s) 
 {
-	length = length + 2;
-    
-	cntrl[length] = '\0';
-    
-	for (int b = length-1; b > a + 4; --b)
+    char_separator<char> delim(" ", "\";<>&|#") ; // using <boost/tokenizer.hpp>
+    tokenizer<char_separator<char>> mytok(s, delim); //using <boost/tokenizer.hpp>
+
+    for (auto j = mytok.begin(); j != mytok.end(); ++j) //using <boost/tokenizer.hpp>
     {
-		cntrl[b] = cntrl[b - 2];
+        l.push(*j);
     }
-	cntrl[a + 4] = ' ';
-    
-	cntrl[a + 3] = cntrl[a + 2];
-    
-	cntrl[a + 2] = cntrl[a + 1];
-    
-	cntrl[a + 1] = cntrl[a];
-    
-	cntrl[a] = ' ';
-    
-	a = a + 4;
 }
 
-void lengthd(char cntrl[], int &length, int &a)
+void popq(queue<string> &qu) 
 {
-	length = length + 2;
-    
-	cntrl[length] = '\0';
-    
-	for (int b = length-1; b > a + 5; --b)
+    while(!qu.empty()) 
     {
-		cntrl[b] = cntrl[b - 2];
+        qu.pop();
     }
-	cntrl[a + 5] = ' ';
-    
-    cntrl[a + 4] = cntrl[a + 3];
-    
-	cntrl[a + 3] = cntrl[a + 2];
-    
-	cntrl[a + 2] = cntrl[a + 1];
-    
-	cntrl[a + 1] = cntrl[a];
-    
-	cntrl[a] = ' ';
-    
-	a = a + 5;
 }
 
-void redctrl(const vector<struct redirect*> &file)
+unsigned set_rd(queue<string> qu) 
 {
-	if(file.size() == 0) return;
+    unsigned char_count = 0;
+    while(!qu.empty() && qu.front() == "<") 
+    {
+        ++char_count;
+        qu.pop();
+    }
     
-	for(unsigned i = 0; i < file.size(); ++i)
-	{
-		int filedes;
+    if (char_count == 1) 
+    { 
+        return inprd;
+    }
+    
+    else if (char_count == 3) 
+    { 
         
-		int filedes1[2];
-        
-		int lengtha = strlen(file.at(i)->file);
-        
-		
-		char temp[500];
-        
-		switch(file.at(i)->io)
-		{
-			case 0: 
-				filedes = open(file.at(i)->file, O_CREAT|O_RDWR|O_TRUNC, S_IRUSR|S_IWUSR);
-                
-				if(filedes == -1)
-				{
-					perror("open()0");
-					exit(1);
-				}
-                
-				if(dup2(filedes, file.at(i)->filedes) == -1)
-				{
-					perror("dup2()0");
-					exit(1);
-				}
-				break;
-                
-			case 1: 
-            
-				filedes = open(file.at(i)->file, O_CREAT|O_RDWR|O_APPEND, S_IRUSR|S_IWUSR);
-                
-				if(filedes == -1)
-				{
-					perror("open()1");
-					exit(1);
-				}
-                
-				if(dup2(filedes, file.at(i)->filedes) == -1)
-				{
-					perror("dup2()1");
-					exit(1);
-				}
-				break;
-                
-			case 2: 
-            
-				filedes = open(file.at(i)->file, O_RDONLY);
-                
-				if(filedes == -1)
-				{
-					perror("open()2");
-					exit(1);
-				}
-                
-				if(dup2(filedes, file.at(i)->filedes) == -1)
-				{
-					perror("dup2()2");
-				}
-                
-				break;
-                
-			case 3: 
-				strcpy(temp, file.at(i)->file);
-                
-				strcat(temp, "\n");
-                
-				if(-1 == pipe(filedes1))
-				{
-					perror("pipe()");
-					exit(1);
-				}
-                
-				if(write(filedes1[wpipe], temp, lengtha + 1) == -1)
-				{
-					perror("write()");
-					exit(1);
-				}
-                
-				if(dup2(filedes1[rpipe], 0) == -1)
-				{
-					perror("dup2()");
-					exit(1);
-				}
-                
-				if(close(filedes1[wpipe]) == -1)
-				{
-					perror("close()");
-					exit(1);
-				}
-				break;
-		}
-	}
+        return strrd;
+    }
+    
+    else if (char_count != 0) 
+    {
+        return rderr;
+    }
+    
+    while (!qu.empty() && qu.front() == ">") 
+    {
+        ++char_count;
+        qu.pop();
+    }
+    
+    if (char_count == 1) 
+    { 
+        return outrd;
+    }
+    
+    else if (char_count == 2) 
+    { 
+        return apprd;
+    }
+    
+    else if (char_count != 0) 
+    {
+        return rderr;
+    }
+    
+    if (!qu.empty() && qu.front() == "|") 
+    {
+        qu.pop();
+        return pip;
+    }
+    
+    return nrd;
 }
 
+string mq(int pops, queue<string> &q);
+int matq(queue<string> q);
 
-//determines how many '<' or '>' there are
-void org(char cntrl[], int &f)
+bool get(queue<string> &q, string &fn) 
 {
-    char ink = '<',
-           outk = '>';
-	f = 0;
+    if (q.empty()) 
+    {
+        return false;
+    }
     
-	string temp;
+    fn = q.front();
+    if (fn == "\"") 
+    {
+        int pops = matq(q);
+            if (pops == nomatch) 
+            {
+                return nomatch;
+            }
+        string s = mq(pops, q);
+        fn = s;
+        
+        return true;
+    }
     
-	int length = strlen(cntrl);
-    
-	for (int i = 0; i < length; ++i)
-	{
-		if (cntrl[i] == '#')
-		{
-			cntrl[i] = '\0';
-            
-			break;
-		}
-	}
-    
-	length = strlen(cntrl);
-    
-	for (int i = 0; i < length; ++i)
-	{
-		if (cntrl[i] == '\'' || cntrl[i] == '\"')
-		{
-			for (int j = i; j < length; ++j)
-			{
-				cntrl[j] = cntrl[j+1];
-			}
-			--length;
-			--i;
-		}
-	}
-    
-	length = strlen(cntrl);
-    
-	for (int i = 0; i < length; ++i)
-	{
-		if (cntrl[i] == '\t')
-		{
-			cntrl[i] = ' ';
-		}
-	}
-	
-	for (int i = 0; i < length; ++i)
-	{
-		if (i == 0)
-		{
-			if (isdigit(cntrl[i]))
-			{
-				if (cntrl[i+1] == ink && cntrl[i+2] != ink)
-                {
-					lengthb(cntrl, length, i);
-                }
-				else if (cntrl[i+1] == ink && cntrl[i+2] == ink && cntrl[i+3] == ink)
-                {
-					lengthd(cntrl ,length, i);
-                }
-				else if (cntrl[i+1] == outk && cntrl[i+2] != outk)
-                {
-					lengthb(cntrl, length, i);
-                }
-				else if (cntrl[i+1] == outk && cntrl[i+2] == outk)
-                {
-					lengthc(cntrl, length, i);
-                }
-			}
-			else if (cntrl[i] == ink && cntrl[i+1] != ink)
-            {
-				lengtha(cntrl, length, i);
-            }
-			else if (cntrl[i] == ink && cntrl[i+1] == ink && cntrl[i+2] == ink)
-            {
-				lengthc(cntrl, length, i);
-            }
-			else if (cntrl[i] == outk && cntrl[i+1] != outk)
-            {
-				lengtha(cntrl, length, i);
-            }
-			else if (cntrl[i] == outk && cntrl[i+1] == outk)
-            {
-				lengthb(cntrl, length, i);
-            }
-			else if (cntrl[i] == '|')
-            {
-				lengtha(cntrl, length, i);
-            }
-
-		}
-		else
-		{
-			if (isdigit(cntrl[i]) && cntrl[i-1] == ' ')
-			{
-				if (cntrl[i+1] == ink && cntrl[i+2] != ink)
-                {
-					lengthb(cntrl, length, i);
-                }
-				else if (cntrl[i+1] == ink && cntrl[i+2] == ink && cntrl[i+3] == ink)
-                {
-					lengthd(cntrl, length, i);
-                }
-				else if (cntrl[i+1] == outk && cntrl[i+2] != outk)
-                {
-					lengthb(cntrl, length, i);
-                }
-				else if (cntrl[i+1] == outk && cntrl[i+2] == outk)
-                {
-					lengthc(cntrl, length, i);
-                }
-			}
-			else if (cntrl[i] == ink && cntrl[i+1] != ink)
-            {
-				lengtha(cntrl, length, i);
-            }
-			else if (cntrl[i] == ink && cntrl[i+1] == ink && cntrl[i+2] == ink)
-            {
-				lengthc(cntrl, length, i);
-            }
-			else if (cntrl[i] == outk && cntrl[i+1] != outk)
-            {
-				lengtha(cntrl, length, i);
-            }
-			else if (cntrl[i] == outk && cntrl[i+1] == outk)
-            {
-				lengthb(cntrl, length, i);
-            }
-			else if (cntrl[i] == '|')
-            {
-				lengtha(cntrl, length, i);
-            }
-	
-		}
-	}
-	
-	
-	for (int i = 0; i < length; ++i)
-	{
-		if (cntrl[i] == ' ')
-		{
-			if (cntrl[i+1] == ' ')
-			{
-				for (int j = i; j < length; ++j)
-				{
-					cntrl[j] = cntrl[j+1];
-				}
-				--i;
-				--length;
-			}
-		}
-	}
-
-	length = strlen(cntrl);
-    
-	while (cntrl[0] == ' ')
-	{
-		for (int i = 0; i < length; ++i)
-		{
-			cntrl[i] = cntrl[i+1];
-		}
-	}
-
-	length = strlen(cntrl);
-    
-	while (cntrl[length-1] == ' ')
-	{
-		cntrl[length-1] = '\0';
-		-- length;
-	}
-
-	for (int i = 0; cntrl[i+2] != '\0'; ++i)
-	{
-		if(cntrl[i] == '|' && cntrl[i+2] == '|')
-		{
-			f = 1;
-		}
-	}
+    q.pop();
+    return true;
 }
 
-bool numctrl(string s, int &io)
+bool poptrue(queue<string> &qu, const unsigned rd, string &fn)
 {
-	if (isdigit(s.at(0)))
-	{
-		s.erase(s.begin());
-        
-		if(s == ">")
+    if (rd == nrd)
+    {
+        return true;
+    }
+    else if (rd == inprd || rd == outrd || rd == pip) 
+    {
+        qu.pop();
+        if (rd != pip) 
         {
-			io = 0;
-			return true;
-		}
-		
-        else if(s == "<<<")
+            return (get(qu, fn));
+        }
+        return true;
+    }
+    else if (rd == strrd) 
+    {
+        qu.pop();
+        qu.pop();
+        qu.pop();
+        return (get(qu, fn));
+    }
+    else if (rd == apprd) 
+    {
+        qu.pop();
+        qu.pop();
+        return (get(qu, fn));
+    }
+    return false;
+}
+
+
+bool cpipe(queue<string> qu) {
+    if (!qu.empty() && qu.front() == "|") 
+    {
+        qu.pop();
+        
+        if (!qu.empty() && qu.front() != ";"&&  qu.front() != "|" &&  qu.front() != "#" && qu.front() != "&"  ) 
         {
-			io = 3;
-			return true;
-		}
-		else if(s == "<")
+            return true;
+        }
+    }
+        return false;
+}
+
+void pc(queue<string> &v, queue<string> &qu) {
+    while (!qu.empty() && qu.front() != ";"&&  qu.front() != "|" &&  qu.front() != "#" && qu.front() != "&") 
+    {
+        v.push(qu.front());
+        qu.pop();
+    }
+    
+    if (cpipe(qu)) 
+    { 
+        v.push(qu.front());
+        qu.pop();
+        pc(v, qu);
+    }
+}
+
+bool quitp(queue<string> &v) {
+    if (iequals(v.front(), "exit")) 
+    {
+        return true;
+    }
+    return false;
+}
+
+void convcstr(vector<string> &s, vector<char*> &cs) 
+{
+    for (unsigned i = 0; i != s.size(); ++i) 
+    {
+        cs[i] = &s[i][0];
+    }
+}
+
+bool connectortrue(bool status, queue<string> &qu) 
+{
+    if (!qu.empty() && qu.front() == "&")
+    {
+        qu.pop();
+        
+        if (!qu.empty() && qu.front() == "&") 
         {
-			io = 2;
-			return true;
-		}
-        else if(s == ">>")
+            qu.pop();
+            
+            if (!status) 
+            {
+                return false;
+            }
+            else 
+            {
+                return true;
+            }
+        }
+        else if (qu.empty()) 
         {
-			io = 1;
-			return true;
-		}
-		
-	}
-	return false;
-}
-
-void parse (char *comm[], char cntrl[], vector<struct redirect*> &file, int &f)
-{
-	f = 0;
-    char * get[500];
-	struct redirect* temp = 0;
-	vector<string> s;
-	char * tk, *ptr;
-	string tempa;
-    
-	tk = strtok_r(cntrl, " ", &ptr);
-    
-	int c = 0;
-    
-	get[c] = tk;
-    
-	tempa = tk;
-
-	while (tk != NULL)
-	{
-		++c;
-		tempa = tk; 
+            cout << "Syntax error" << endl;
+            return false;
+        }
+        else {
+            cout << "Syntax error" << endl;
+            
+            return false;
+        }
+    }
+    else if (!qu.empty() && qu.front() == "|") 
+    {
+        qu.pop();
         
-		s.push_back(tempa);
-        
-		tk = strtok_r(NULL, " ", &ptr);
-        
-		get[c] = tk;
-	}
-
-	int j = 0;
-	int filedes;
-	int io;
+        if (!qu.empty() && qu.front() == "|") 
+        {
+            qu.pop();
+            if (status) 
+            {
+                return false;
+            }
+            
+            else 
+            {
+                return true;
+            }
+        }
+        else if (qu.empty()) 
+        {
+            cout << "Syntax error" << endl;
+            return false;
+        }
+        else {
+            cout << "Syntax error" << endl;
+            return false;
+        }
+    }
+    else if (!qu.empty() && qu.front() == ";") 
+    {
+        qu.pop();
+        return true;
+    }
+    else if (!qu.empty() && qu.front() == "#") 
+    {
+        return false;
+    }
     
-	for (unsigned i = 0; i < s.size()-1; ++i)
-	{
-		if((s.at(i+1)== "<" || s.at(i+1) == "<<<" || s.at(i+1) == ">" || s.at(i+1) == ">>" || numctrl(s.at(i+1), io)) && (s.at(i)== "<" || s.at(i)=="<<<" || s.at(i)== ">" ||s.at(i) == ">>" || numctrl(s.at(i), io))) f= 1;
-	}
-
-	for(unsigned i = 0; i < s.size(); ++i)
-	{	
-			if(s.at(i) == ">") 
-			{
-				temp = new struct redirect(get[i+1], 0, 1);
-                
-				file.push_back(temp);
-                
-				++i;
-			}
-            
-            else if(s.at(i) == "<") 
-			{
-			
-				temp = new struct redirect(get[i+1], 2, 0);
-				file.push_back(temp);
-				++i;
-			}
-            
-			else if(s.at(i) == ">>") 
-			{
-				
-				temp = new struct redirect(get[i+1], 1, 1);
-                
-				file.push_back(temp);
-                
-				++i;
-			}
-			
-            else if(numctrl(s.at(i), io))
-			{
-				filedes = s.at(i)[0] - '0';
-                
-				temp = new struct redirect(get[i+1], io, filedes);
-                
-				file.push_back(temp);
-				++i;
-			}
-            
-			else if(s.at(i) == "<<<") 
-			{
-
-				temp = new struct redirect(get[i+1], 3, 0);
-                
-				file.push_back(temp);
-				++i;
-			}
-        
-			else
-			{
-				comm[j] = get[i];
-				++j;
-			}
-
-	}
+    else if (!qu.empty())  
+    {
+        cout << "Syntax error: " << qu.front() <<  " not a correct connector" << endl;
+        return false;
+    }
+    else {
+        return false;
+    }
 }
 
-void exec(char cntrl[], int save_stdin = -1)
-{
-	
-	char *left;
-    char *right;
-    char *comm[500] = {0};
-    int f = 0;
-	unsigned i = 0;
-	
-	for (i = 0; i < strlen(cntrl); ++i)
-	{
-		if (cntrl[i] == '|' && i != 0 && i != strlen(cntrl)-1)
-		{
-			left = cntrl; 
-            
-			cntrl[i] = '\0';
-             
-			right = cntrl + i + 1;
 
-			int filedes[2];
-            
-			if(-1 == pipe(filedes))
-			{
-				perror("pipe()");
-				exit(1);
-			}
-            
-			pid_t pid;
-            
-			if(-1 == (pid = fork()))
-			{
-				perror("fork()");
-				exit(1);
-			}
-            
-			else if(pid == 0) 
-			{
-				if(-1 == dup2(filedes[wpipe], 1))
-				{
-					perror("dup2()");
-					exit(1);
-				}	
-                
-				if(-1 == close(filedes[rpipe]))
-				{
-					perror("close()");
-					exit(1);
-				}
-                
-				exec(left, save_stdin);
-                
-				exit(0);
-			}
-            
-			else 
-			{
-				
-				if (save_stdin == -1)
-				{
-					if(-1 == (save_stdin = dup(0)))
-					{
-						perror("dup()");
-						exit(1);
-					}
-				}	
-				
-				if(close(filedes[wpipe]) == -1)
-				{
-					perror("close()");
-					exit(1);
-				}
-				
-				if(dup2(filedes[rpipe], 0) == -1)
-				{
-					perror("dup2()");
-					exit(1);
-				}
-				exec(right, save_stdin);
-                
-				if(dup2(save_stdin, 0) == -1)
-				{
-					perror("dup2()");
-					exit(1);
-				}
-				
-				if(close(filedes[rpipe]) == -1)
-				{
-					perror("close()");
-					exit(1);
-				}
-				
-				if(wait(0) == -1)
-				{
-					perror("wait()");
-					exit(1);
-				}
-				return;
-			}
-		}
-	}
-	vector<struct redirect*> files;
+
+int matq(queue<string> qu) {
+    int pops = 0;
     
-	parse(comm, cntrl, files, f);
-	if(f == 1)
-	{
-		cerr << "Syntax error." << endl;
-		return;
-	}
-	pid_t pid;
-	int status;
-	if ((pid = fork()) < 0)
-	{
-		perror("fork failed\n");
-		r = false;
-		exit(1);
-	}
-	else if (pid == 0)
-	{
-		redctrl(files);
-		
-		if (execvp(*comm, comm) < 0)
-		{
-			perror ("exec failed\n");
-			r = false;
-			exit(1);
-		}
-	}
-	else
-	{
-		if (-1 == waitpid(pid, &status, 0))
-		{
-			perror("wait error\n");
-			r = false;
-			exit(1);
-		}
-		if (WEXITSTATUS(status) == 0)
-		{
-			r = true;
-		}
-		else if (WEXITSTATUS(status) == 1)
-		{
-			r = false;
-		}
-	}
-	return;
+    if (qu.front() == "\"") 
+    {
+        qu.pop();
+        ++pops;
+    }
+    
+    while (!qu.empty() && qu.front() != "\"") 
+    {
+        qu.pop();
+        ++pops;
+    }
+    
+    if (!qu.empty() && qu.front() == "\"") 
+    {
+        ++pops;
+        return pops;
+    }
+    return nomatch;
 }
 
-/*
-//this function parses the command string
-void parse2(string& str, char**& dilem, char*& token)
+string mq(int pops, queue<string> &qu) 
 {
-	char** dilem1 = (char**) malloc (BUFSIZ);
-	bool tokenbool = false;
-	int cntr = 0;
-	string space = " ",
-			andkey = "&&",
-			orkey = "||",
-			semi = ";";
-	string input;
-	size_t sz1 = -1;
-	
-	while(token != NULL && !tokenbool)
-	{
-		string t = token;
-		
-		if((t.find(andkey) != sz1) || (t.find(orkey) != sz1) || (t.find(semi) != sz1)) tokenbool = true;
-		
-		if(!tokenbool) dilem1[cntr] = token;
+    qu.pop(); 
+    string s = qu.front();
+    qu.pop();
+    for (int i = 0; !qu.empty() && i < pops - 2 && qu.front() != "\""; ++i) 
+    {
+        s = s + " " + qu.front();
+        qu.pop();
+    }
+    
+    qu.pop(); 
+    return s;
+}
 
-		else
-		{
-			dilem1[cntr] = NULL;
-			str = t;		
-		}
-		
-		cntr++;
-		token = strtok(NULL, " "); 
-	}
-
-	if(!tokenbool) dilem1[cntr] = NULL;
-	
-	dilem = dilem1;
-	
+int pp(queue<string> &qu, vector< vector<string> > &v, queue<pair<unsigned, string> > &p, queue<unsigned> &pipes) {
+    int pipc = 0;
+    for (unsigned i = 0; !qu.empty(); ++i)
+    {
+        
+        vector<string> sv;
+        while (!qu.empty() && qu.front() != "<" && qu.front() != ">" && qu.front() != "|") 
+        {
+            if (qu.front() == "\"") 
+            {
+                int pops = matq(qu);
+                
+                if (pops == nomatch) 
+                {
+                    return nomatch;
+                }
+                string s = mq(pops, qu);
+                sv.push_back(s);
+            }
+            else 
+            {
+                sv.push_back(qu.front());
+                qu.pop();
+            }
+        }
+        unsigned rd = set_rd(qu);
+        string fn; 
+        if (poptrue(qu, rd, fn)) 
+        {
+            if (rd == nrd || rd == pip) 
+            {
+                fn = nofile;
+            }
+            p.push(make_pair(rd, fn));
+        }
+        else {
+            return -1;
+        }
+        if (rd == pip) {
+            pipes.push(pip);
+            ++pipc;
+        }
+        else {
+            pipes.push(npip);
+        }
+        v.push_back(sv);
+    }
+    return pipc;
 }
 
 
-
-bool execute(char** arg)	
+void change(vector< vector<string> > &v, vector< vector<char*> > &cs) 
 {
-	int stat = 0;
-	
-	if(*arg == NULL) return false;
-	
-	int pid = fork();
-	if(pid == -1)
-	{
-		perror("fork failed");
-		exit(1);
-	}	
-	else if(pid == 0)
-	{
-		stat = execvp(arg[0], arg);
-
-		if(stat == -1)
-		{
-			perror("execvp failed");
-			exit(1);
-		}
-	}
-
-	else if(pid > 0)
-	{
-		int wait = waitpid(pid, &stat, 0);
-		string found = arg[0];
-
-		if(wait == -1)	perror("wait failed");
-		
-		if(exitshell(arg));
-		
-		else if( found == "true") return true;
-		
-		else if( found == "false") return false;
-
-		if(stat > 0) return false;
-	}
-	return true;
+    for (unsigned j = 0; j < v.size(); ++j) 
+    {
+        vector<char*> scs(v.at(j).size()+1);
+        convcstr(v.at(j), scs);
+        cs.push_back(scs);
+    }
 }
-*/
-int main(int argc, char**argv)
+
+
+bool sizeOf(vector< vector<string> > &ve, queue< pair<unsigned, string> > pa, queue<unsigned> pipes) 
 {
-    vector<struct redirect*> file;
-	int f = 0;
-	while(1)
-	{
+    return ve.size() == pa.size() && ve.size() == pipes.size() && pa.size() == pipes.size();
+}
+
+bool mp(int f[][arrf], const unsigned npipes) {
+    if (npipes == 0) 
+    {
+        return false;
+    }
+    for (unsigned i = 0; i < npipes; ++i) 
+    {
+        if (pipe(f[i]) == -1) 
+        {
+            perror("pipe():");
+            _exit(-1);
+        }
+    }
+    return true;
+}
+
+
+vector<char*> makesubvec (vector< vector<char*> > &v, unsigned &i) 
+{
+    vector<char*> s;
+    
+    for (unsigned a = 0; a < v.at(i).size(); ++a) 
+    {
+        s.push_back(v.at(i).at(a));
+    }
+    
+    i = i+1; 
+    
+    return s;
+}
+
+pair<unsigned, string> makesubqueue (queue< pair<unsigned, string> > &qu) 
+{
+    pair<unsigned, string> s;
+    
+    s = make_pair(qu.front().first, qu.front().second);
+    qu.pop();
+    
+    return s;
+}
+
+unsigned makep (queue<unsigned> &p) {
+    unsigned p1 = p.front();
+    p.pop();
+    return p1;
+}
+
+int mrd(vector< vector<char*> > &v, unsigned i) 
+{
+    vector<char*> s;
+    while (s.size() <= 1 && i < v.size()) 
+    {
+        s.clear();
+        s = makesubvec(v, i);
+    }
+    
+    if (s.size() > 1) {
+        return i -1;
+    }
+    return i;
+}
+
+void eq(queue< pair<unsigned, string> > &qu, queue<unsigned> &pa, int i) 
+{
+    for (int j = 0; j < i-1 && !qu.empty() && !pa.empty(); ++j) 
+    {
+        qu.pop();
+        pa.pop();
+    }
+    
+    qu.pop();
+}
+
+void pdata(const vector<char*> &ve, const pair<unsigned, string> &pa, const unsigned pipe) 
+{
+    for (unsigned i = 0; i < ve.size() -1; ++i) 
+    {
+        cout << "[" << ve.at(i) << "] ";
+    }
+    cout << "(" << pa.first << ", " << pa.second << ") ";
+    
+    if (pipe == pip) 
+    {
+        cout << "pipe" << endl;
+    }
+    
+    else 
+    {
+        cout << "npipe" << endl;
+    }
+}
+
+
+bool begin_exec(vector< vector<char*> > &v, queue< pair<unsigned, string> > &q, queue<unsigned> &pipes, const int n)
+{
+    int exec_status;
+    int f [maxpipes][arrf];
+    
+    int cp = 0;
+    mp(f, n);
+    
+    
+    for (unsigned i = 0; i < v.size() && !q.empty() && !pipes.empty(); ) 
+    {
+        vector<char*> sv = makesubvec(v, i);
+        pair<unsigned, string> sq = makesubqueue(q);
+        unsigned rd = sq.first;
+        string fn = sq.second;
+    
+        int mc = mrd(v, i) - i;
+        
+        if (mc > 0)
+        {
+          
+            eq(q, pipes, mc);
+            i += mc;
+           
+        }
+     
+        pid = fork();
+        if (pid < 0) 
+        {
+            perror("fork()");
+            _exit(-1);
+        }
+        else if (pid == 0) 
+        { 
+            int oldfd, newfd;
+            
+            if (rd == inprd) 
+            {
+                if ((newfd = open(fn.c_str(), O_RDONLY)) == -1) 
+                {
+                    perror(" inprd: open failed");
+                    _exit(-1);
+                }
+                
+                if ((oldfd = dup(0)) == -1) 
+                {
+                    perror("inprd: dup()");
+                    _exit(-1);
+                }
+                
+                if (dup2(newfd, 0) == -1) {
+                    perror("inprd: dup2()");
+                    _exit(-1);
+                }
+            }
+            
+            else if (rd == strrd) 
+            {
+                string s = fn;
+                string file = "file.txt";
+                ofstream out(file);
+                out << s << '\n';
+                out.close();
+                
+                if ((newfd = open(file.c_str(), O_RDONLY)) == -1) 
+                {
+                    perror("strrd: open failed");
+                    _exit(-1);
+                }
+                if ((oldfd = dup(0)) == -1) 
+                {
+                    perror("strrd: dup()");
+                    _exit(-1);
+                }
+                if (dup2(newfd, 0) == -1) 
+                {
+                    perror("strrd: dup2()");
+                    _exit(-1);
+                }
+                if (unlink(file.c_str()) == -1) 
+                {
+                    perror("inprd: unlink");
+                    _exit(-1);
+                }
+            }
+            
+            else if (rd == outrd) 
+            {
+                
+                if ((newfd = open(fn.c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR)) == -1) 
+                {
+                    perror("outrd: open failed");
+                    _exit(-1);
+                }
+                
+                if ((oldfd = dup(1)) == -1) 
+                {
+                    perror("outrd: dup()");
+                    _exit(-1);
+                }
+                
+                if (dup2(newfd, 1) == -1) 
+                {
+                    perror("outrd: dup()");
+                    _exit(-1);
+                }
+            }
+            
+            else if (rd == apprd) 
+            {
+                if ((newfd = open(fn.c_str(), O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR)) == -1) 
+                {
+                    perror("apprd: open failed");
+                    _exit(-1);
+                }
+                
+                if ((oldfd = dup(1)) == -1) 
+                {
+                    perror("apprd: dup()");
+                    _exit(-1);
+                }
+                
+                if (dup2(newfd, 1) == -1) 
+                {
+                    perror("apprd: dup2()");
+                    _exit(-1);
+                }
+            }
+            
+            if (n > 0) 
+            { 
+                
+                if (cp == 0) 
+                {
+                    if (dup2(f[cp][wpipe], 1) == -1) 
+                    { 
+                        perror("dup2()");
+                        _exit(-1);
+                    }
+                    
+                    if (close(f[cp][rpipe]) == -1) 
+                    { 
+                        perror("close()");
+                        _exit(-1);
+                    }
+                }
+                
+                else if (cp == n) 
+                { 
+                    if (-1 == dup2(f[cp-1][rpipe], 0))
+                    { 
+                        perror("dup2()");
+                        _exit(-1);
+                    }
+                    
+                    if (-1 == close(f[cp-1][wpipe]))
+                    { 
+                        perror("close()");
+                        _exit(-1);
+                    }
+                }
+                
+                else 
+                {
+                    if (-1 == dup2(f[cp-1][rpipe], 0)) 
+                    { 
+                        perror("dup2()");
+                        _exit(-1);
+                    }
+                    
+                    if (-1 == close(f[cp-1][wpipe])) { 
+                        perror("close()");
+                        _exit(-1);
+                    }
+                    
+                    if (-1 == dup2(f[cp][wpipe], 1)) { 
+                        perror("dup2()");
+                        _exit(-1);
+                    }
+               }
+           }
+          
+           if (-1 == execvp(sv[0], sv.data())) 
+           {
+               perror("execvp()");
+               _exit(-1);
+           }
+        }
+        
+        else if (pid > 0) 
+        { 
+            if (n > 0) 
+            {
+                if (cp > 0) 
+                {
+                    if (close(f[cp - 1][0]) == -1) 
+                    {
+                        perror("close()");
+                    }
+                    if (close(f[cp - 1][1]) == -1) 
+                    {
+                        perror("close()");
+                    }
+                }
+            }
+            if (-1 == waitpid(pid, &exec_status, WUNTRACED)) 
+            {
+                perror("waitpid()");
+            }
+            
+            ++cp;
+            
+            if (exec_status != 0) 
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool cd(queue<string> &q) 
+{
+    if (q.front() == "cd") 
+    {
+        q.pop();
+        return true;
+    }
+    return false;
+}
+
+bool directhome() {
+    char prev[BUFSIZ]; 
+    char *h;
+    int s;
+    
+    if ((s = pathconf(".", _PC_PATH_MAX)) == -1) 
+    {
+        perror("pathconf():");
+    }
+    
+    if (getcwd(prev, s) == NULL)
+    {
+        perror("getcwd():");
+    }
+    
+    if (setenv(owd, prev, 1) == -1) 
+    {
+        perror("setenv():");
+    }
+    
+    if ((h = secure_getenv(hd)) == NULL) 
+    {
+        perror("secure_getenv():");
+    }
+    if (chdir(h) == -1)
+    {
+       
+        perror("chdir():");
+        return false;
+    }
+    
+    if (-1 == setenv(cwd, h, 1)) 
+    {
+        perror("setenv(cwd):");
+    }
+    return true;
+}
+
+bool dirp(const string &s) 
+{
+    char *p; 
+    char* c;
+    
+    if ((c = secure_getenv(owd)) == NULL) 
+    {
+        perror("secure_getenv(owd):");
+    }
+    
+    if ((p = secure_getenv(cwd)) == NULL) 
+    {
+        perror("secure_getenv(cwd):");
+    }
+    
+    if (chdir(c) == -1) 
+    {
+        perror("chdir():");
+        return false;
+    }
+    
+    if (setenv(owd, p, 1) == -1) 
+    {
+        perror("setenv(owd):");
+    }
+    
+    if (setenv(cwd, c, 1) == -1) 
+    {
+        perror("setenv(cwd):");
+    }
+    
+    return true;
+}
+
+void rowd(char* sowd) 
+{
+    if (setenv(owd, sowd, 1) == -1) 
+    {
+        perror("setenv(owd):");
+    }
+}
+
+bool dirpath(const string &s) 
+{
+    char p[BUFSIZ]; 
+    char c[BUFSIZ];
+    char *sowd;
+    int sz;
+    
+    if ((sz = pathconf(".", _PC_PATH_MAX)) == -1) 
+    {
+        perror("pathconf()");
+    }
+    
+    if (getcwd(p, sz) == NULL) 
+    {
+        perror("getcwd(prev):");
+    }
+    
+    if ((sowd = secure_getenv(owd)) == NULL) 
+    {
+        perror("secure_getenv():");
+    }
+    
+    if (setenv(owd, p, 1) == -1) 
+    {
+        perror("setenv(owd):");
+    }
+    if (chdir(s.c_str()) == -1) 
+    {
+        perror("chdir()");
+        rowd(sowd);
+        return false;
+    }
+    
+    if (getcwd(c, sz) == NULL) 
+    {
+        perror("getcwd()");
+    }
+    
+    if (setenv(cwd, c, 1) == -1) 
+    {
+        perror("setenv(cwd):");
+    }
+    
+    return true;
+}
+
+bool dirc(queue<string> &q) 
+{
+    string s;
+    
+    if (q.empty()) 
+    {
+        return directhome();
+    }
+    
+    else if (q.front() == "-") 
+    {
+        s = q.front(); 
+        q.pop();
+        return dirp(s);
+    }
+    
+    else 
+    {
+        s = q.front(); 
+        q.pop();
+        return dirpath(s);
+    }
+}
+
+void suspend_process(int sig, siginfo_t *i, void *context) {
+    if (pid == 0) 
+    { 
+        pid = getpid() + 1; 
+    }
+    if (kill(pid, SIGTSTP) == -1) 
+    {
+        perror("kill():");
+        return;
+    }
+    
+    cp.push(pid);
+}
+
+void killc(int sig, siginfo_t *i, void *context) 
+{
+    if (pid == 0) 
+    {
+        pid = getpid() + 1;
+    }
+    if (kill(pid, sig) == -1) 
+    {
+        perror("kill():");
+    }
+}
+
+void sigc() {
+    struct sigaction ctrlC;
+    ctrlC.sa_sigaction = &killc;
+    ctrlC.sa_flags = SA_SIGINFO | SA_RESTART;
+    
+    if (sigaction(SIGINT, &ctrlC, NULL) < 0) 
+    {
+        perror("sigaction(ctrlc):");
+    }
+}
+
+void sigz() {
+    struct sigaction ctrlZ;
+    
+    ctrlZ.sa_sigaction = &suspend_process;
+    
+    ctrlZ.sa_flags = SA_SIGINFO | SA_RESTART;
+    
+    if (sigaction(SIGTSTP, &ctrlZ, NULL) < 0) 
+    {
+        perror("sigaction(ctrz):");
+    }
+}
+
+bool commands(const queue<string> &q) {
+    if (q.front() == "fg" || q.front() == "bg") 
+    {
+        return true;
+    }
+    return false;
+}
+
+
+bool send_sig(queue<string> &q) 
+{
+    string sig = q.front(); q.pop();
+    
+    if (sig == "fg") 
+    {
+        if (cp.empty()) 
+        {
+            cout << "fg: can't find process" << endl;
+            return false;
+        }
+        
+        int status;
+        
+        cpid = cp.top(); cp.pop();
+        
+        if (kill(cpid, SIGCONT) == -1) 
+        {
+            perror("kill():");
+        }
+        
+        pid = cpid;
+        
+        if (waitpid(cpid, &status, WUNTRACED) == -1) 
+        {
+            perror("waitpid():");
+        }
+        return true;
+    }
+    else if (sig == "bg") {
+        if (cp.empty()) 
+        {
+            cout << "bg: can't find process" << endl;
+            return false;
+        }
+        
+        cpid = cp.top();
+        
+        if (kill(cpid, SIGCONT) == -1) 
+        {
+            perror("kill():");
+        }
+        return true;
+    }
+    return false;
+}
+
+int main() {
+    
+    sigc();
+    sigz();
+    while (1) {
+        
+        string inp;
+        
+        queue<string> l;
         prompt();
-        /*
-        		string input;
-		string space = " ",
-				andkey = "&&",
-				orkey = "||",
-				semi = ";",
-				hashtag = "#";
-		
-		//display prompt
-		getline(cin, input);
-		
-		int num1 = input.find(hashtag,0);
-		int cnt = 0;
-
-		if(num1 >= 0) input = input.substr(0, num1);
-
-		string::iterator i;
-
-		for(i = input.begin(); i < input.end(); i++,cnt++)
-		{
-			int andchar = input.find(andkey, cnt);
-			int	orchar = input.find(orkey, cnt);
-			int semichar = input.find(semi, cnt);
-
-			if(andchar >= 0 && (andchar < orchar || orchar == -1) && (andchar < semichar || semichar == -1))
-			{
-				input.insert(input.find(andkey,cnt), " ");
-				input.insert(input.find(andkey,cnt)+2, " ");
-
-				i = input.begin();
-				i = i + input.find(andkey,cnt) + 2;
-				cnt = input.find(andkey,cnt) + 2;
-			}
-
-			else if(orchar >= 0 && (orchar < semichar || semichar == -1) && (orchar < andchar || andchar == -1))
-			{
-				input.insert(input.find(orkey,cnt), " ");
-				input.insert(input.find(orkey,cnt)+2, " ");
-
-				i = input.begin();
-				i = i + input.find(orkey,cnt) + 2;
-				cnt = input.find(orkey,cnt) + 2;
-			}
-
-			else if(semichar >= 0 && (semichar < andchar || andchar == -1) && (semichar < orchar || orchar == -1))
-			{
-				input.insert(input.find(semi,cnt), " ");
-				input.insert(input.find(semi,cnt)+1, " ");
-
-				i = input.begin();
-				i = i + input.find(semi,cnt) + 1;
-				cnt = input.find(semi,cnt) + 1;
-			}
-			
-		}
-		
-		char* chr1 = (char*) input.c_str();
-		char* tkn;
-
-		tkn = strtok( chr1, " \t\n");
-
-		while( tkn != NULL)
-		{
-			string str;
-			bool booland = true;
-			bool boolor = false;
-			char** dilem;
-			
-			while(tkn != NULL)
-			{
-				parse2(str, dilem, tkn);
-
-				if(*dilem != NULL && booland && !boolor)
-				{
-
-					if(exitshell(dilem))
-					{
-						exit(1);
-					}
-				}
-				if(str == orkey)
-				{
-					if(boolor);
-
-					else if(!booland)
-					{
-						booland = true;
-						boolor = false;
-					}
-					else if(execute(dilem) == true)
-					{
-						if(tkn != NULL)
-						{
-							boolor = true;
-						}
-					}
-
-				}
-					
-				else if( str == andkey)
-				{ 	
-						
-					if(!booland);
-						
-					else if(boolor)
-					{
-						boolor = false;
-						booland = true;
-					}
-						
-					else if(execute(dilem) == false)
-					{
-						if(tkn != NULL)
-						{
-							booland = false;
-						}
-					}
-				}	
-
-				else if(str == 	semi)
-				{
-					if(booland && !boolor)
-					{
-						if(execute(dilem));
-					}
-
-					booland = true;
-					boolor = false;
-				}	
-				else
-				{
-					if(execute(dilem));
-				}
-					
-				delete dilem;
-			}
-			break;
-		}*/
-        char ctrl[500];
         
-		memset(ctrl, '\0', 500);
-
-		readi(ctrl);
-		org(ctrl, f);
-		
-		if(f == 1)
-		{
-			cerr << "Syntax Error." << endl;
-			continue;
-		}
-
-		if (ctrl[strlen(ctrl)-1] == '>' || ctrl[strlen(ctrl)-1] == '<')
-		{
-			cerr << "Invalid number of arguments. " << endl;
-			continue;
-		}
+        getline(cin, inp);
+        parseq(l, inp);
         
-		if (ctrl[0] == '\0') continue;
-            
-		if (strncmp(ctrl, "exit", 4) == 0)
-		{
-			if (ctrl[4] == '\0' || ctrl[4] == ' ')
-			{
-				cout << "End of program." << endl;
-				exit(0);
-			}
-		}
-		exec(ctrl);
+        queue<string> command;
         
-		int length = file.size();
+        bool cdtrue = false; bool sigtrue = false; bool exectrue = false;
         
-		for (int i = 0; i < length; ++i)
-		{
-			if (file.at(i) != 0) 
+        while (!l.empty()) 
+        {
+            if (l.front() == "#") 
             {
-				delete file.at(i);
-				file.at(i) = 0;
-			}
-		}
-        
-		file.clear();
-	}
-    
+                break;
+            }
+            pc(command, l);
+            
+            if (command.empty()) 
+            {
+                cout << "Error: command" << endl;
+                break;
+            }
+            else if (quitp(command))
+            {
+                return 0;
+            }
+            else {
+                
+                if (cd(command)) 
+                {
+                    cdtrue = dirc(command);
+                    if (!connectortrue(cdtrue, l)) 
+                    {
+                        break;
+                    }
+                }
+                else if (commands(command)) 
+                {
+                    sigtrue = send_sig(command);
+                    
+                    if (!connectortrue(sigtrue, l)) 
+                    {
+                        break;
+                    }
+                }
+                else 
+                {
+                    vector< vector<string> > v;
+                    queue< pair<unsigned, string> > rfil;
+                    queue<unsigned> pipes;
+                    int n = pp(command, v, rfil, pipes);
+                    
+                    if (n == nomatch) 
+                    {
+                        cout << "Syntax error" << endl;
+                        break;
+                    }
+                    if (sizeOf(v, rfil, pipes) && v.size() != 0 && n != -1)
+                    {
+                        vector< vector<char*> > cmds;
+                        change(v, cmds);
+                        exectrue = begin_exec(cmds, rfil, pipes, n);
+                    }
+                    else 
+                    {
+                        cout << "Syntax error" << endl;
+                        break;
+                    }
+                    if (!connectortrue(exectrue, l)) 
+                    {
+                        break;
+
+                    }
+                }
+            }
+            popq(command);
+        }
+    }
     return 0;
 }
-

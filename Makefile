@@ -1,30 +1,9 @@
-COMPILER = g++
-CFLAGS = -ansi -pedantic -Wall -Werror
-RESULT = ./bin/rshell
-RESULT1 = ./bin/ls
-DIRECTORY = ./src/main.cpp
-DIRECTORY1 = ./src/ls.cpp
-DIRECTORY2 = ./src/mv.cpp
-DIRECTORY3 = ./src/rm.cpp
-all: 
-	mkdir -p ./bin
-	$(COMPILER) $(CFLAGS) $(DIRECTORY) -o $(RESULT)
-	$(COMPILER) $(CFLAGS) $(DIRECTORY1) -o $(RESULT1)
+all: rshell
 
-rshell: 
-	mkdir -p ./bin
-	$(COMPILER) $(CFLAGS) $(DIRECTORY) -o $(RESULT)  
-ls:
-	mkdir -p ./bin
-	$(COMPILER) $(CFLAGS) $(DIRECTORY1) -o $(RESULT1)
-mv:
-	mkdir -p ./bin
-	$(COMPILER) $(CFLAGS) $(DIRECTORY2) -o $(RESULT2)  
-
-rm:
-	mkdir -p ./bin
-	$(COMPILER) $(CFLAGS) $(DIRECTORY3) -o $(RESULT3)  
-
-clean:
-	rm -rf ./bin
-
+rshell:
+		mkdir -p ./bin
+		g++ -Wall -Werror -std=c++11 -pedantic ./src/rshell.cpp -o ./bin/rshell
+		g++ -Wall -Werror -std=c++11 -pedantic ./src/cp.cpp -o ./bin/cp
+		g++ -Wall -Werror -std=c++11 -pedantic ./src/ls.cpp -o ./bin/ls
+		g++ -Wall -Werror -std=c++11 -pedantic ./src/mv.cpp -o ./bin/mv
+		g++ -Wall -Werror -std=c++11 -pedantic ./src/rm.cpp -o ./bin/rm
