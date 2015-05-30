@@ -16,6 +16,7 @@
 #include <boost/tokenizer.hpp>
 #include <boost/algorithm/string.hpp>
 //updated rshell code
+
 using namespace std; 
 using namespace boost;
 unsigned const nrd = 0, inprd = 1, strrd = 2, outrd = 3, apprd = 4, fdrd =5, fdard =6, pip = 7, npip = 7, rderr = 9, rpipe = 0, wpipe = 1;
@@ -33,7 +34,7 @@ void home(string &s) {
     
     char* homedir;
     
-    if ((homedir = secure_getenv(hd)) == NULL) 
+    if ((homedir = getenv(hd)) == NULL) 
     {
         perror("secure_getenv():");
     }
@@ -786,7 +787,7 @@ bool directhome() {
         perror("setenv():");
     }
     
-    if ((h = secure_getenv(hd)) == NULL) 
+    if ((h = getenv(hd)) == NULL) 
     {
         perror("secure_getenv():");
     }
@@ -809,12 +810,12 @@ bool dirp(const string &s)
     char *p; 
     char* c;
     
-    if ((c = secure_getenv(owd)) == NULL) 
+    if ((c = getenv(owd)) == NULL) 
     {
         perror("secure_getenv(owd):");
     }
     
-    if ((p = secure_getenv(cwd)) == NULL) 
+    if ((p = getenv(cwd)) == NULL) 
     {
         perror("secure_getenv(cwd):");
     }
@@ -863,7 +864,7 @@ bool dirpath(const string &s)
         perror("getcwd(prev):");
     }
     
-    if ((sowd = secure_getenv(owd)) == NULL) 
+    if ((sowd = getenv(owd)) == NULL) 
     {
         perror("secure_getenv():");
     }

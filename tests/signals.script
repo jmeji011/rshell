@@ -1,0 +1,14 @@
+Script started on Sat 30 May 2015 03:51:26 AM PDT
+~
+jmeji011@hammer $ cd cs100/rshell
+~/cs100/rshell
+jmeji011@hammer $ make
+mkdir -p ./bin
+g++ -Wall -Werror -g -std=c++11 ./src/rshell.cpp -o ./bin/rshell
+cc1plus: error: unrecognized command line option "-std=c++11"
+make: *** [rshell] Error 1
+~/cs100/rshell
+jmeji011@hammer $ exit
+exit
+
+Script done on Sat 30 May 2015 03:51:41 AM PDT
