@@ -1,0 +1,185 @@
+Script started on Sat 30 May 2015 04:39:51 PM PDT
+~
+jmeji011@hammer $ cs100
+[0;91m
+===============================================================================
+|                                                                             |
+| You have enabled settings specific for cs100.  Everything you do is being   |
+| recorded to measure your progress in the class.                             |
+|                                                                             |
+| Important commands for the class:                                           |
+|   * calcgrade.sh          displays a detailed breakdown of your grade       |
+|   * checksyscalls.sh      is your cpp file doing proper error checking?     |
+|   * typespeed             practice typing unix commands                     |
+|                                                                             |
+| Important commands for general C++ programming:                             |
+|   * make                  don't call g++ manually; let make do the work!    |
+|   * gdb                   the GNU debugger                                  |
+|   * valgrind              get rid of your memory leaks                      |
+|   * cppcheck              static analysis tool                              |
+|   * man                   find help about any syscall / terminal command    |
+|                                                                             |
+===============================================================================
+[0m
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~[0;95m [0;36m$[0m cd cs100/rshell
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m make
+mkdir -p ./bin
+g++ -Wall -Werror -std=c++11 ./src/rshell.cpp -o ./bin/rshell
+g++ -Wall -Werror -std=c++11 ./src/cp.cpp -o ./bin/cp
+g++ -Wall -Werror -std=c++11 ./src/ls.cpp -o ./bin/ls
+g++ -Wall -Werror -std=c++11 ./src/mv.cpp -o ./bin/mv
+g++ -Wall -Werror -std=c++11 ./src/rm.cpp -o ./bin/rm
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m bin/rshell
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #as you can see prompt was updated and ec 2 is shown ` ~
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #now we can test cd commands
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ls #show directories in current dir
+bin  C:\nppdf32Log\debuglog.txt  LICENSE  Makefile  README.md  src  tests
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ cd 
+jmeji011@hammer.cs.ucr.edu:~$ #show that it               ls #show that it went to the home directory
+cs10	cs13   cs14w	Documents  Exercises2  Public	  test	   Videos
+cs100	cs14   cs61	Downloads  Music       rshell	  testhw2
+cs120b	cs141  Desktop	Exercises  Pictures    Templates  testpg
+jmeji011@hammer.cs.ucr.edu:~$ #`  ~ means home dir
+jmeji011@hammer.cs.ucr.edu:~$ #now we can test cd <path>
+jmeji011@hammer.cs.ucr.edu:~$ cd cs100
+jmeji011@hammer.cs.ucr.edu:~/cs100$ ls # show that i we went into the dir
+firstrepo  hw4	labs  rshell  ucr-cs100
+jmeji011@hammer.cs.ucr.edu:~/cs100$ #done again with spaces
+jmeji011@hammer.cs.ucr.edu:~/cs100$  cd rshel         rshell
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ls #still works
+bin  C:\nppdf32Log\debuglog.txt  LICENSE  Makefile  README.md  src  tests
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #show error when wrong path is given
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ls
+bin  C:\nppdf32Log\debuglog.txt  LICENSE  Makefile  README.md  src  tests
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ cd hello
+chdir(): No such file or directory
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #now show that cd - works
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ cd -
+jmeji011@hammer.cs.ucr.edu:~/cs100$ ls
+firstrepo  hw4	labs  rshell  ucr-cs100
+jmeji011@hammer.cs.ucr.edu:~/cs100$ #we are now in the previous working dir
+jmeji011@hammer.cs.ucr.edu:~/cs100$ #again with spaces
+jmeji011@hammer.cs.ucr.edu:~/cs100$ cd   -
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #went back to the previous working dir
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #now we can test the signals
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #going to press cnt  trl c to show it doesnt exit rshell
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ^Ckill():: No such process
+
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #see     no processes are running s and its still in rshell
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #now using           multiple times
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ^Ckill():: No such process
+^Ckill():: No such process
+^Ckill():: No such process
+^Ckill():: No such process
+^Ckill():: No such process
+
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #same didnt exit rshell
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #now using ctrl z
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ^Zkill():: No such process
+
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #multiple times
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ^Zkill():: No such process
+^Zkill():: No such process
+^Zkill():: No such process
+^Zkill():: No such process
+
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #nothing as          didnt ecit   xit again
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #now we will show that cntrl    trl c does end a procces   ess using cat
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ cat
+hello
+hello
+hi
+hi
+^Cjmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ps #showing that cat terminated with ctrl c
+  PID TTY          TIME CMD
+24425 pts/6    00:00:00 bash
+24470 pts/6    00:00:00 rshell
+24662 pts/6    00:00:00 ps
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #no cat
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ # we will now test ctrl z on cat
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ cat
+hello
+hello
+hi
+hi
+^Zjmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ps #th  cat will still be running in the background as show here
+  PID TTY          TIME CMD
+24425 pts/6    00:00:00 bash
+24470 pts/6    00:00:00 rshell
+24672 pts/6    00:00:00 cat
+24674 pts/6    00:00:00 ps
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #there it is cat. now to bring it back we can test our   our fg command
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ fg
+
+
+
+
+hello
+hello
+hi
+hi
+we are now running cat
+we are now running cat
+^Zjmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #checking if it still running again
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ps
+  PID TTY          TIME CMD
+24425 pts/6    00:00:00 bash
+24470 pts/6    00:00:00 rshell
+24672 pts/6    00:00:00 cat
+24743 pts/6    00:00:00 ps
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #there it   t is again
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ fg
+hello
+hello
+bye 
+bye 
+^Cjmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #cat is now terminated
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ps
+  PID TTY          TIME CMD
+24425 pts/6    00:00:00 bash
+24470 pts/6    00:00:00 rshell
+24750 pts/6    00:00:00 ps
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ r #running fg 
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ fg
+fg: can't find process
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #no processes were found as expected
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #running bg same result
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ bg
+bg: can't find process
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #now testing bg
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ cat
+hello
+hello
+hi
+hi
+^Zjmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ bg
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ps
+ps
+hello
+execvp(): No such file or directory
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ fg
+fg
+hello
+execvp(): No such file or directory
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ls
+ls
+
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ps
+ps
+
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #there is a bug here that i could not fix
+#there is a bug here that i could not fix
+
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ^Ckill():: No such process
+
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ ^Zkill():: No such process
+
+jmeji011@hammer.cs.ucr.edu:~/cs100/rshell$ #end of scri            exit
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m #end of test
+[s%%%%%%%%%%[u[0;32mjmeji011[0;36m@[0;32mcs100[0;36m:[0;32m~/cs100/rshell[0;95m (master) [0;36m$[0m exit
+exit
+~
+jmeji011@hammer $ exit
+exit
+
+Script done on Sat 30 May 2015 04:58:13 PM PDT
