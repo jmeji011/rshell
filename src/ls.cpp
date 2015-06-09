@@ -12,6 +12,8 @@
 #include <sstream>
 #include <algorithm> 
 #include <queue>
+#include <stdio.h>
+#include <errno.h>
 
 // Online colors for escape char
 #define BLUE "\033[1;34m"
@@ -87,7 +89,13 @@ int visit(unsigned flags , string dir)
 
     //OPENS CURRENT DIRECTORY PATH
     DIR *dirp;
+    
     dirp = opendir(dir.c_str());
+    if(dirp == NULL)
+    {
+        perror("opendir()");
+        exit(1);
+    }
     int totalblk = 0;
     unsigned len = 0;
     string t;
@@ -95,9 +103,23 @@ int visit(unsigned flags , string dir)
     string home;
     
     dp = readdir( dirp );
+    if(dp == NULL)
+    {
+        perror("readdir()");
+        exit(1);
+    }
     while(dp)
     {
-        stat(dp->d_name,&st);
+       
+        //syscall error here
+        /*
+        if(stat(dp->d_name,&st) == -1)
+        {
+            perror("stat");
+            exit(1);
+        }*/
+        stat(dp->d_name, &st);
+       
         files.push_back(dp->d_name);
     
         if(files.back().at(0) != '.'  )
@@ -112,22 +134,24 @@ int visit(unsigned flags , string dir)
             len = t.size();
     
         dp = readdir( dirp );
+  
     }
     
     // GET DIRECTORIES
     for (unsigned i = 0; i < files.size(); i++)
     {
         struct stat st;
-       // stat((dir + "/" + files.at(i)).c_str(), &in);
+       
         if(lstat((dir + '/' + (files.at(i))).c_str() , &st ) == -1)
         {
+            perror("lstat");
             return -1;
         }
 
         if (( files.at(i).at(0) != '.') && S_ISDIR( st.st_mode ) ) 
         {
             direct.push_back(files.at(i));
-            //cout << files.at(i) << endl;
+            
         }
         if(files.at(i).size() > 1)
         {
@@ -136,10 +160,10 @@ int visit(unsigned flags , string dir)
                 direct.push_back(files.at(i));
             }
         }
-         //cout << endl;
+        
     }
     
-    //cout << "hello" << endl;
+    
     //NEED TO SORT FILENAMES  
     sort(files.begin(),files.end());   
     if((flags & 2) == 2)
@@ -164,6 +188,7 @@ int visit(unsigned flags , string dir)
                 {
                     if(lstat((dir + '/' + (*it)).c_str() , &st ) == -1)
                     {
+                        perror("lstat");
                         return -1;
                     }
                 }
@@ -171,22 +196,36 @@ int visit(unsigned flags , string dir)
                 {
                    if(lstat((dir + (*it)).c_str() , &st ) == -1)
                     {
+                        perror("lstat");
                         return -1;
                     }
                 }
                     
                 string username,group;
-                if( ( pwd = getpwuid( st.st_uid ) )!= NULL)
+                pwd = getpwuid( st.st_uid );
+                if( pwd != NULL)
                 {
                     username = pwd->pw_name;
                 }
-                if( ( src_gr = getgrgid( st.st_gid ) )!= NULL)
+                else if(pwd == NULL)
+                {
+                    perror("getpwuid");
+                    exit(1);
+                }
+                
+                src_gr = getgrgid( st.st_gid );
+                if( src_gr == NULL)
+                {
+                    perror("src_gr");
+                    exit(1);
+                }
+                else if(src_gr !=NULL)
                 {
                     group = src_gr->gr_name;
                 }
                 
                
-                //~ ((st.st_mode & S_IFMT) == S_IFDIR) ? cout << "d" : cout << "-";
+                
                 if(S_ISDIR(st.st_mode) ) 
                     cout << "d";
                 else if(S_ISCHR(st.st_mode))
@@ -245,7 +284,7 @@ int visit(unsigned flags , string dir)
                         cout  << *it << endl;
             
             }
-            //files.pop_front();
+            
         }
     }
     else if((flags & 2) != 2)
@@ -266,6 +305,7 @@ int visit(unsigned flags , string dir)
                 {
                     if(lstat((dir + '/' + (files.at(j))).c_str() , &st ) == -1)
                     {
+                        perror("lstat");
                         return -1;
                     }
                 }
@@ -273,6 +313,7 @@ int visit(unsigned flags , string dir)
                 {
                    if(lstat((dir + (files.at(j))).c_str() , &st ) == -1)
                     {
+                        perror("lstat");
                         return -1;
                     }
                 }
@@ -319,8 +360,13 @@ int visit(unsigned flags , string dir)
             visit(flags,temp);
         }
     }
+  //  
     
-    closedir(dirp);
+    if(closedir(dirp) == -1)
+    {
+        perror("closedir()");
+        exit(1);
+    }
     return 1;
 }
 

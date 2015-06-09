@@ -2,84 +2,143 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <dirent.h>
+#include <string>
 #include <cstring>
-#include <stdlib.h>
+#include <vector>
 #include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
 
 using namespace std;
-void removeDir (const char *curr)
-{
-	struct stat buf;
-	DIR *dirp;
-	struct dirent *filespecs;
-	char temp[100];
-	if(NULL == (dirp = opendir(curr))) {
-		perror("Error with opendir");
-		exit(1);
-	}
-	while(NULL != (filespecs = readdir(dirp))) {
-		if(strcmp(filespecs->d_name, ".") == 0 || strcmp(filespecs->d_name, "..") == 0)
-			continue;
-		strcpy(temp, curr);
-		strcat(temp, "/");
-		strcat(temp, filespecs->d_name);
-		stat(temp, &buf);
-		if(S_ISREG(buf.st_mode))
-		{
-			unlink(temp);
-		}
-		else if(S_ISDIR(buf.st_mode))
-			removeDir(temp);
-	}
 
-	rmdir(curr);
-	return;
+bool r_FLAG = false;
+
+void rmFile(char* filename)
+{
+	if(-1 == unlink(filename))
+	{
+		perror("Could not delete");		
+	}
 }
 
-bool param_r = false;
-int main(int argc, char *argv[]) {
-	struct stat buf;
-	char path[256][256];
-	int j = 0, count = 0;
-	if (argc == 1)
+void recursiveRM(char* filename)
+{
+	struct stat b;
+	if(-1 == stat(filename, &b))
 	{
-		cerr << "Too few arguments" << endl;
-		exit(1);
+		cout << filename << endl;
+		perror("Stat");
+		return;
 	}
-	for(int i = 1; i < argc; ++i)
+
+	if(S_ISDIR(b.st_mode))
 	{
-		if(argv[i][0] == '-')
+		DIR* dirp;
+
+		if(NULL == (dirp = opendir(filename)))
 		{
-			if(strlen(argv[i]) != 2 || argv[i][1] != 'r')
+			perror("Open");
+			return;
+		}
+		struct dirent* dir;
+		errno = 0;
+
+		while(NULL != (dir = readdir(dirp)))
+		{
+			string path = filename;
+
+			if(strcmp(dir->d_name, ".") == 0 
+				|| strcmp(dir->d_name, "..") == 0)
 			{
-				cerr << "wrong flag";
+				continue;
+			}
+
+			struct stat b1;
+
+
+			path += dir->d_name;
+			if(-1 ==  stat(const_cast<char*> (path.c_str()), &b1))
+			{
+				perror("Stat 1");
+				continue;
+			}
+
+			if(S_ISDIR(b1.st_mode))
+			{
+				path += '/';
+				recursiveRM(const_cast<char*> (path.c_str()));
+				if(-1 == rmdir(const_cast<char*> (path.c_str())))
+				{
+					perror("Remove directory");
+					exit(1);
+				}
+			}
+			else
+			{
+				rmFile(const_cast<char*> (path.c_str()));
+			}
+		}
+		if(errno != 0)
+		{
+			perror("Read");
+			exit(1);
+		}
+
+		if(-1 == closedir(dirp))
+		{
+			perror("Close");
+			exit(1);
+		}	
+	}
+	else
+	{
+		rmFile(filename);
+	}
+}
+
+int main(int argc, char** argv)
+{
+	int ch = 0;
+	opterr = 0;
+
+	while(( ch = getopt(argc, argv, "r")) != -1)
+	{
+		switch(ch)
+		{
+			case 'r':
+				r_FLAG = true;
+				break;
+
+			case '?':
+				cerr << "Flag not supported" << endl;
+				break;
+		}
+	}
+
+	if(r_FLAG)
+	{
+		for(int i = 1; i < argc; ++i)
+		{
+			if(argv[i][0] == '-')
+			{
+				continue;
+			}
+			string path = argv[i];
+			path += '/';
+			recursiveRM(const_cast<char*>(path.c_str()));
+			if(-1 == rmdir(const_cast<char*>(path.c_str())))
+			{
+				perror("Remove directory");
 				exit(1);
 			}
-			param_r = true;
-		}
-		else
-		{
-			strcpy(path[j], argv[i]);
-			j++;
-			count ++;
 		}
 	}
-	for (int i = 0; i < count; ++i)
+	else
 	{
-		stat(path[i], &buf);
-		if(S_ISREG(buf.st_mode))
+		for(int i = 1; i < argc; ++i)
 		{
-			unlink(path[i]);
-		}
-		else if(S_ISDIR(buf.st_mode))
-		{
-			if(param_r)
-				removeDir(path[i]);
-			else
-				cerr << "It's a folder" << endl;
+			rmFile(argv[i]);
 		}
 	}
 	return 0;

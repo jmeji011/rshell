@@ -54,6 +54,12 @@ int main(int argc, char** argv)
 	
 	int result;
 	result = access(argv[2], F_OK);
+    if(result == -1)
+    {
+        perror("access");
+        exit(1);
+    }
+    
 	if( result == 0 && !S_ISDIR(d.st_mode))
 	{
 		cerr << "File " << argv[2] << " exists already" << endl;
@@ -67,10 +73,12 @@ int main(int argc, char** argv)
 		if(link(source.c_str(), destin.c_str()) == -1)
 		{
 			perror("link. ");
+            exit(1);
 		}
 		if(unlink(source.c_str()) == -1)
 		{
 			perror("unlink. ");
+            exit(1);
 		}
 	}
 	

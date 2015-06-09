@@ -235,7 +235,7 @@ int main(int argc, char** argv)
 	struct stat s;
 	if(stat(argv[2], &s) != -1)
 	{
-		cerr << "File exists already" << endl;
+		perror("stat()");
 		exit(1);
 	}
 	
